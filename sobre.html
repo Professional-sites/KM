@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Sobre nós</title>
+<link href="assets/styles.css" rel="stylesheet"/>
+<script defer="" src="assets/i18n.js"></script>
+</head>
+<body>
+<div class="header-wrap">
+<header>
+<div class="container top">
+<div class="brand"><img alt="KM logo" src="assets/km-logo.jpg"/><div class="name"><span data-i18n="brand">KM</span></div></div>
+<nav class="nav">
+<a href="index.html">Voltar ao início</a>
+<a href="sobre.html">Sobre nós</a>
+<a href="produtos.html">Produtos</a>
+<a href="onde-comprar.html">Onde comprar</a>
+<a href="garantia.html">Garantia</a>
+</nav>
+<div aria-label="Abrir menu" class="hamburger">☰</div>
+<div class="menu">
+<a href="index.html">KM — Início</a>
+<a href="sobre.html">Sobre nós</a>
+<a href="produtos.html">Produtos</a>
+<a href="onde-comprar.html">Onde comprar</a>
+<a href="garantia.html">Garantia</a>
+</div>
+
+
+
+
+
+</div>
+</header></div>
+
+
+<main class="container">
+<section class="section">
+<h2>Sobre nós</h2>
+<p>Somos apaixonados por desempenho. Curadoria de hardware com equilíbrio entre custo, performance e confiabilidade.</p>
+<p>Atendimento humano, política de garantia clara e envios rápidos fazem parte do nosso compromisso.</p>
+</section>
+</main>
+<footer>
+<div class="footer-inner">
+<div class="fcols">
+<div>
+<h4>Institucional</h4>
+<a href="#">Sobre a KM</a>
+<a href="#">Política de Privacidade</a>
+<a href="#">Trocas e Devoluções</a>
+</div>
+<div>
+<h4>Produtos</h4>
+<a href="produtos.html">Todos os produtos</a>
+<a href="#">Novidades</a>
+<a href="#">Mais procurados</a>
+</div>
+<div>
+<h4>Onde comprar</h4>
+<a href="onde-comprar.html">Lojas parceiras</a>
+<a href="#">Distribuidores</a>
+<a href="#">Atacado</a>
+</div>
+<div>
+<h4>Suporte</h4>
+<a href="garantia.html">Garantia</a>
+<a href="#">Central de ajuda</a>
+<a href="#">Contato</a>
+</div>
+</div>
+<div class="copy">© 2025 KM — Todos os direitos reservados.</div>
+</div>
+</footer>
+<script src="assets/subpages.js"></script>
+<script src="assets/subpages.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', ()=>{
+    document.querySelectorAll('.lang-picker button').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        document.querySelectorAll('.lang-picker button').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        setLang(b.dataset.lang);
+      });
+    });
+  });
+</script>
+</body>
+</html>

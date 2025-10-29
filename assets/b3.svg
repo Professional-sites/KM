@@ -1,0 +1,11 @@
+<svg width="1200" height="420" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b74ff"/>
+      <stop offset="1" stop-color="#67a3ff"/>
+    </linearGradient>
+  </defs>
+  <rect rx="18" width="1200" height="420" fill="url(#bg)"/>
+  <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle"
+        font-family="Inter,Arial" font-weight="800" font-size="64" fill="#ffffff">KM — Destaque</text>
+</svg>
