@@ -128,3 +128,32 @@ footer{margin-top:24px;background:#0b1e3a;color:#e6f0ff}
 .dots{display:flex;justify-content:center;gap:8px;margin-top:10px}
 .dots .dot{width:8px;height:8px;border-radius:999px;border:none;outline:none;background:#c7d7ef;cursor:pointer}
 .dots .dot.active{background:linear-gradient(90deg,var(--blue),var(--blue-2))}
+
+
+/* === Mobile tuning: one card per view (≤768px) === */
+@media (max-width: 768px){
+  .cards{ 
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 8px 8px 12px 8px;
+    gap: 10px;
+  }
+  .cards::-webkit-scrollbar{ height: 0 }
+  .card{
+    min-width: 92vw;       /* almost full-width on mobile */
+    max-width: 92vw;
+    margin: 0 auto;        /* center within viewport */
+    scroll-snap-align: center;
+  }
+  .card img{
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+  .dots{
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+}
