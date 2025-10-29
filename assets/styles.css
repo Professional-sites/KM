@@ -157,3 +157,61 @@ footer{margin-top:24px;background:#0b1e3a;color:#e6f0ff}
     margin-top: 12px;
   }
 }
+
+
+/* === Remove brand text label globally (keep only logo) === */
+.brand .name{ display:none !important; }
+
+/* === Header responsive layout for search + hamburger === */
+.header-wrap .top,
+.top{ display:flex; align-items:center; gap:12px; }
+
+/* Desktop: let search be comfortable but not huge */
+@media (min-width: 769px){
+  .search{ flex: 0 1 520px; }
+}
+
+/* Mobile: search + hamburger on one row, no overflow */
+@media (max-width: 768px){
+  .search{ 
+    flex: 1 1 auto; 
+    min-width: 0; 
+    padding: 6px 10px;              /* slightly smaller */
+  }
+  .search input{ width: 100% !important; font-size: 14px; }
+  .search .go{ width: 32px; height: 32px; font-size: 14px; }
+  .hamburger{ font-size: 24px; flex: 0 0 auto; }
+}
+
+
+/* === Desktop search bar alignment fix (v7) === */
+@media (min-width: 769px){
+  .search{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--bg-2);
+    border-radius:999px;
+    padding:6px 8px 6px 16px;
+    border:1px solid #e6ecf5;
+    max-width:520px;
+  }
+  .search input{
+    flex:1;
+    border:none;
+    background:transparent;
+    font-size:15px;
+    padding-right:8px;
+    outline:none;
+  }
+  .search .go{
+    border:none;
+    border-radius:50%;
+    width:36px;
+    height:36px;
+    background:linear-gradient(90deg,var(--blue),var(--blue-2));
+    color:#fff;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+}
