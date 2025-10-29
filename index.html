@@ -8,12 +8,83 @@
 <script defer="" src="assets/products.js"></script>
 <script defer="" src="assets/home.js"></script>
 <script defer="" src="assets/i18n.js"></script>
-</head>
+<style id="kmDrawerAllStyles">
+/* Hide drawer by default (desktop) */
+#kmDrawer, #kmDrawerOverlay { display: none; }
+
+/* Mobile drawer styles */
+@media (max-width: 900px){
+  #kmDrawer, #kmDrawerOverlay { display: block; }
+  #kmDrawerOverlay{
+    position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
+    opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
+  }
+  #kmDrawer{
+    position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
+    background: rgba(255,255,255,0.92);
+    -webkit-backdrop-filter: saturate(140%) blur(2px);
+    backdrop-filter: saturate(140%) blur(2px);
+    box-shadow: 2px 0 18px rgba(0,0,0,.18);
+    transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
+    display:flex; flex-direction:column;
+  }
+  .km-drawer-open #kmDrawer{ transform: translateX(0); }
+  .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
+
+  #kmDrawerHeader{
+    padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
+  #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
+
+  #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
+  #kmDrawerNav a{
+    padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
+  }
+  #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
+}
+
+/* Desktop-only navbar tweaks: hide textual 'Voltar ao início'; force horizontal + blue */
+@media (min-width: 901px){
+  .km-home-link{ display:none !important; }
+
+  header nav ul, nav .menu, header .menu, .top-menu, .navbar, header nav, nav.primary {
+    display:flex;
+    gap:16px;
+    flex-wrap:nowrap;
+    align-items:center;
+  }
+  header nav a, nav a, .navbar a, .top-menu a, .menu a {
+    color:#1d4ed8;
+    white-space:nowrap;
+    display:inline-flex;
+    align-items:center;
+    text-decoration:none;
+  }
+  header nav a:hover, nav a:hover, .navbar a:hover, .top-menu a:hover, .menu a:hover {
+    color:#1e40af;
+  }
+}
+
+
+/* Mobile: hide any legacy/desktop menus so only the drawer is visible */
+@media (max-width: 900px){
+  header nav ul, header .menu, nav .menu, .top-menu, .navbar .menu, .navbar ul, .nav-desktop, .menu-desktop {
+    display: none !important;
+  }
+  /* If the site uses checkbox hack for mobile, keep those off-screen */
+  input[type="checkbox"][id*="menu"], input[type="checkbox"][class*="menu"]{
+    position: absolute;
+    left: -9999px;
+  }
+}
+</style></head>
 <body>
 <div class="header-wrap">
 <header>
-<a href="index.html"><div class="container top">
-<a href="index.html"><div class="brand"><a href="index.html"><img alt="KM logo" src="assets/km-logo.jpg"/></a><a href="index.html"><div class="name"><a href="index.html"><span data-i18n="brand">KM</span></a></div></a></div></a>
+<div class="container top">
+<div class="brand"><img alt="KM logo" src="assets/km-logo.jpg"/><div class="name"><span data-i18n="brand">KM</span></div></div>
 <div class="search">
 <input data-i18n-placeholder="search_placeholder" placeholder="Pesquisar..." type="search"/><button class="go">🔍</button>
 </div>
@@ -25,14 +96,14 @@
 <a href="garantia.html"><span data-i18n="nav_warranty">Garantia</span></a>
 </nav>
 <div aria-label="Abrir menu" class="hamburger">☰</div>
-<a href="index.html"><div class="menu">
+<div class="menu">
 <a href="index.html">KM — Início</a>
 <a href="sobre.html">Sobre nós</a>
 <a href="produtos.html">Produtos</a>
 <a href="onde-comprar.html">Onde comprar</a>
 <a href="garantia.html">Garantia</a>
-</div></a>
-</div></a>
+</div>
+</div>
 </header></div>
 <main class="container">
 <section class="hero">
@@ -149,49 +220,9 @@
   });
 </script>
 <script src="assets/subpages.js"></script>
-<style>
-/* Hide mobile drawer by default (desktop) */
-#kmDrawer, #kmDrawerOverlay { display: none; }
-
-
-/* Mobile drawer styles */
-@media (max-width: 900px){
-  #kmDrawer, #kmDrawerOverlay { display: block; }
-  #kmDrawerOverlay{
-    position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
-    opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
-  }
-  #kmDrawer{
-    position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
-    background: rgba(255,255,255,0.92); /* white semi-transparent */
-    box-shadow: 2px 0 18px rgba(0,0,0,.18);
-    transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
-    display:flex; flex-direction:column;
-    -webkit-backdrop-filter: saturate(140%) blur(2px);
-    backdrop-filter: saturate(140%) blur(2px);
-  }
-  .km-drawer-open #kmDrawer{ transform: translateX(0); }
-  .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
-
-  #kmDrawerHeader{
-    padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-  }
-  #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
-  #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
-
-  #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
-  #kmDrawerNav a{
-    padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
-  }
-  #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
-}
-</style>
 <div aria-hidden="true" id="kmDrawer">
 <div id="kmDrawerHeader">
-<a aria-label="Início" href="index.html">
-<img alt="Logo" src="assets/km-logo.jpg"/>
-</a>
+<a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
 <h3>Menu</h3>
 </div>
 <nav aria-label="Menu lateral" id="kmDrawerNav">
@@ -204,54 +235,74 @@
 </div>
 <div id="kmDrawerOverlay"></div>
 <script>
-// Drawer toggle for mobile (keeps desktop nav unchanged)
+// Mobile-only drawer: prevent other menus from opening
 (function(){
-  function qs(sel, root){ return (root||document).querySelector(sel); }
-  function qsa(sel, root){ return (root||document).querySelectorAll(sel); }
+  function qs(s,r){return (r||document).querySelector(s);}
+  function qsa(s,r){return (r||document).querySelectorAll(s);}
   var htmlTag = document.documentElement;
-
   var drawer = qs("#kmDrawer");
   var overlay = qs("#kmDrawerOverlay");
-  if(!drawer){
-    // Nothing to do
-    return;
-  }
+
+  function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
 
   function openDrawer(){
     htmlTag.classList.add("km-drawer-open");
-    drawer.classList.add("open");
   }
   function closeDrawer(){
     htmlTag.classList.remove("km-drawer-open");
-    drawer.classList.remove("open");
   }
 
-  // Bind hamburger buttons
-  var triggers = qsa("[data-hamburger], .hamburger, #hamburger, .menu-toggle, .btn-hamburger");
-  triggers.forEach(function(btn){
-    btn.addEventListener("click", function(e){
-      // Only act on small screens
-      if (window.matchMedia("(max-width: 900px)").matches){
-        e.preventDefault();
-        openDrawer();
+  // Kill legacy toggles that might add classes/expand menus on mobile
+  function neutralizeLegacyMenu(e){
+    // prevent default anchor/label behavior
+    if(e){ 
+      e.preventDefault(); 
+      e.stopPropagation(); 
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    }
+    // Uncheck any menu-related checkboxes (checkbox hack)
+    qsa('input[type="checkbox"]').forEach(function(cb){
+      var id=(cb.id||"").toLowerCase(), cls=(cb.className||"").toLowerCase();
+      if(id.includes("menu") || id.includes("nav") || cls.includes("menu") || cls.includes("nav")){
+        cb.checked = false;
       }
     });
-  });
-
-  // Close on overlay click or ESC
-  if(overlay){
-    overlay.addEventListener("click", closeDrawer);
-  }
-  document.addEventListener("keydown", function(e){
-    if(e.key === "Escape"){ closeDrawer(); }
-  });
-
-  // Close after clicking a link (navigate next)
-  qsa("#kmDrawerNav a").forEach(function(a){
-    a.addEventListener("click", function(){
-      closeDrawer();
+    // Reset aria-expanded toggles in nav
+    qsa('nav [aria-expanded="true"]').forEach(function(el){ el.setAttribute("aria-expanded","false"); });
+    // Hide any dropdowns that might have been toggled
+    qsa("nav .open, .menu.open, .dropdown.open, .active").forEach(function(el){
+      var c=(el.className||"").toLowerCase();
+      if(c.includes("menu") || c.includes("dropdown") || c.includes("nav")){
+        el.classList.remove("open","active","show");
+        el.style.display = "none";
+      }
     });
+  }
+
+  // Bind hamburger
+  var triggers = qsa("[data-hamburger], .hamburger, #hamburger, .menu-toggle, .btn-hamburger, label[for*='menu']");
+  triggers.forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      if (isMobile()){
+        neutralizeLegacyMenu(e);
+        openDrawer();
+        return false;
+      }
+    }, true); // use capture to intercept early
   });
+
+  // Close actions
+  if(overlay){ overlay.addEventListener("click", closeDrawer); }
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape"){ closeDrawer(); } });
+  qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
+
+  // Add a helper class on mobile for CSS overrides
+  function setMobileClass(){
+    if(isMobile()){ htmlTag.classList.add("km-mobile"); }
+    else{ htmlTag.classList.remove("km-mobile"); }
+  }
+  setMobileClass();
+  window.addEventListener("resize", setMobileClass);
 })();
 </script></body>
 </html>
