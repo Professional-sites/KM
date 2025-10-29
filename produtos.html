@@ -126,5 +126,109 @@
       }
     });
   }
-})();</script></body>
+})();</script><style>
+/* Hide mobile drawer by default (desktop) */
+#kmDrawer, #kmDrawerOverlay { display: none; }
+
+
+/* Mobile drawer styles */
+@media (max-width: 900px){
+  #kmDrawer, #kmDrawerOverlay { display: block; }
+  #kmDrawerOverlay{
+    position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
+    opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
+  }
+  #kmDrawer{
+    position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
+    background: rgba(255,255,255,0.92); /* white semi-transparent */
+    box-shadow: 2px 0 18px rgba(0,0,0,.18);
+    transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
+    display:flex; flex-direction:column;
+    -webkit-backdrop-filter: saturate(140%) blur(2px);
+    backdrop-filter: saturate(140%) blur(2px);
+  }
+  .km-drawer-open #kmDrawer{ transform: translateX(0); }
+  .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
+
+  #kmDrawerHeader{
+    padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
+  #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
+
+  #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
+  #kmDrawerNav a{
+    padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
+  }
+  #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
+}
+</style>
+<div aria-hidden="true" id="kmDrawer">
+<div id="kmDrawerHeader">
+<a aria-label="Início" href="index.html">
+<img alt="Logo" src="assets/km-logo.jpg"/>
+</a>
+<h3>Menu</h3>
+</div>
+<nav aria-label="Menu lateral" id="kmDrawerNav">
+<a href="index.html">Voltar ao início</a>
+<a href="sobre.html">Sobre nós</a>
+<a href="produtos.html">Produtos</a>
+<a href="onde-comprar.html">Onde comprar</a>
+<a href="index.html#contato">Contatos</a>
+</nav>
+</div>
+<div id="kmDrawerOverlay"></div>
+<script>
+// Drawer toggle for mobile (keeps desktop nav unchanged)
+(function(){
+  function qs(sel, root){ return (root||document).querySelector(sel); }
+  function qsa(sel, root){ return (root||document).querySelectorAll(sel); }
+  var htmlTag = document.documentElement;
+
+  var drawer = qs("#kmDrawer");
+  var overlay = qs("#kmDrawerOverlay");
+  if(!drawer){
+    // Nothing to do
+    return;
+  }
+
+  function openDrawer(){
+    htmlTag.classList.add("km-drawer-open");
+    drawer.classList.add("open");
+  }
+  function closeDrawer(){
+    htmlTag.classList.remove("km-drawer-open");
+    drawer.classList.remove("open");
+  }
+
+  // Bind hamburger buttons
+  var triggers = qsa("[data-hamburger], .hamburger, #hamburger, .menu-toggle, .btn-hamburger");
+  triggers.forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      // Only act on small screens
+      if (window.matchMedia("(max-width: 900px)").matches){
+        e.preventDefault();
+        openDrawer();
+      }
+    });
+  });
+
+  // Close on overlay click or ESC
+  if(overlay){
+    overlay.addEventListener("click", closeDrawer);
+  }
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){ closeDrawer(); }
+  });
+
+  // Close after clicking a link (navigate next)
+  qsa("#kmDrawerNav a").forEach(function(a){
+    a.addEventListener("click", function(){
+      closeDrawer();
+    });
+  });
+})();
+</script></body>
 </html>
