@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>KM Store — Admin</title>
+  <!-- mesmo css do site -->
+  <link rel="stylesheet" href="assets/styles.css"/>
+
+  <style>
+    /* 1) esconder qualquer hero / banner / imagem grande que vem do site principal */
+    .hero,
+    .hero-slider,
+    .hero-track,
+    .hero-slide,
+    .header-banner,
+    .top-hero,
+    .big-logo,
+    .home-hero {
+      display: none !important;
+    }
+
+    /* 2) esconder aquele bloco "Menu Voltar ao início ..." que o site mostra abaixo do banner */
+    .menu,
+    .top .menu {
+      display: none !important;
+    }
+
+    /* 3) layout do admin */
+    body{
+      background: #eef3f8;
+      min-height: 100vh;
+    }
+
+    /* header do site fica fixo em cima */
+    .header-wrap{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+
+    /* container principal do admin */
+    .km-admin-wrap{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 16px 40px;  /* espaço pro header */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* login box centralizada e maior */
+    #loginBox{
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      width: min(640px, 100%);
+      margin: 0 auto;
+      padding: 30px 26px 26px;
+    }
+    #loginBox h2{
+      margin-top: 0;
+      font-size: 25px;
+      color: #0f172a;
+    }
+    #loginBox input{
+      width: 100%;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,.12);
+      padding: 0 12px;
+      font-size: 15px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+    #loginBox button{
+      width: 100%;
+      height: 44px;
+      background: #1d4ed8;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    #loginBox p#msg{
+      min-height: 20px;
+      margin-top: 10px;
+      color: #ef4444;
+    }
+
+    /* 4) área administrativa (depois do login) */
+    #adminArea h1{
+      margin: 0;
+      font-size: 26px;
+      color: #0f172a;
+    }
+    #adminArea > p{
+      margin: 4px 0 0;
+      color: #475569;
+    }
+
+    .km-admin-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .km-admin-card{
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.04);
+      padding: 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border: 1px solid rgba(0,0,0,.02);
+    }
+    .km-admin-card h3{
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+    .km-admin-card label{
+      font-size: 12px;
+      color: #475569;
+    }
+    .km-admin-card input[type="text"],
+    .km-admin-card textarea,
+    .km-admin-card select,
+    .km-admin-card input[type="file"]{
+      width: 100%;
+      border: 1px solid rgba(15,23,42,.12);
+      border-radius: 10px;
+      padding: 7px 9px;
+      font-size: 13px;
+      background: #fff;
+    }
+    .km-admin-card textarea{
+      min-height: 52px;
+      resize: vertical;
+    }
+    .km-actions{
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .km-btn{
+      border: none;
+      border-radius: 9px;
+      padding: 7px 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .km-btn.blue{ background:#1d4ed8; color:#fff; }
+    .km-btn.red{ background:#ef4444; color:#fff; }
+    .km-status{ font-size: 12px; min-height: 16px; }
+
+    /* 5) no desktop o drawer não aparece */
+    @media (min-width: 901px){
+      #kmDrawer,
+      #kmDrawerOverlay{
+        display: none !important;
+      }
+    }
+
+    /* 6) no mobile a gente deixa tudo em coluna normal */
+    @media (max-width: 900px){
+      .km-admin-wrap{
+        padding-top: 130px;
+      }
+      .km-admin-card{
+        grid-column: 1 / -1;
+      }
+      .search{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER IGUAL AO SITE -->
+  <div class="header-wrap">
+    <header>
+      <div class="container top">
+        <!-- LOGO: clicar → admin -->
+        <div class="brand">
+          <a href="admin.html">
+            <img alt="KM logo" src="assets/km-logo.jpg"/>
+          </a>
+          <div class="name"><span data-i18n="brand">KM</span></div>
+        </div>
+
+        <div class="search">
+          <input data-i18n-placeholder="search_placeholder" placeholder="Pesquisar..." type="search"/>
+          <button class="go">🔍</button>
+        </div>
+
+        <nav class="nav">
+          <a href="index.html"><span data-i18n="nav_home">Voltar ao início</span></a>
+          <a href="sobre.html"><span data-i18n="nav_about">Sobre nós</span></a>
+          <a href="produtos.html"><span data-i18n="nav_products">Produtos</span></a>
+          <a href="onde-comprar.html"><span data-i18n="nav_where">Onde comprar</span></a>
+          <a href="garantia.html"><span data-i18n="nav_warranty">Garantia</span></a>
+        </nav>
+
+        <div aria-label="Abrir menu" class="hamburger">☰</div>
+        <!-- esse .menu some no desktop por causa do CSS acima -->
+        <div class="menu">
+          <a href="index.html">KM — Início</a>
+          <a href="sobre.html">Sobre nós</a>
+          <a href="produtos.html">Produtos</a>
+          <a href="onde-comprar.html">Onde comprar</a>
+          <a href="garantia.html">Garantia</a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- DRAWER MOBILE (mesmo do site) -->
+  <div aria-hidden="true" id="kmDrawer">
+    <div id="kmDrawerHeader">
+      <a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
+      <h3>Menu</h3>
+    </div>
+    <nav aria-label="Menu lateral" id="kmDrawerNav">
+      <a href="index.html">Voltar ao início</a>
+      <a href="sobre.html">Sobre nós</a>
+      <a href="produtos.html">Produtos</a>
+      <a href="onde-comprar.html">Onde comprar</a>
+      <a href="index.html#contato">Contatos</a>
+    </nav>
+  </div>
+  <div id="kmDrawerOverlay" aria-hidden="true"></div>
+
+  <!-- CONTEÚDO DO ADMIN -->
+  <main class="km-admin-wrap">
+    <!-- LOGIN -->
+    <div id="loginBox">
+      <h2>Login do administrador</h2>
+      <input id="email" type="email" placeholder="Email do admin">
+      <input id="senha" type="password" placeholder="Senha">
+      <button id="btnLogin">Entrar</button>
+      <p id="msg"></p>
+    </div>
+
+    <!-- ÁREA ADMIN (aparece só depois do login) -->
+    <div id="adminArea" style="display:none;">
+      <h1>Cadastro de produtos (200 bancos)</h1>
+      <p>Preencha qualquer card e clique em <b>Salvar</b>. O item vai para o Firestore em <code>produtos</code> e as páginas públicas leem de lá.</p>
+      <div id="adminGrid" class="km-admin-grid"></div>
+    </div>
+  </main>
+
+  <!-- Firebase v8 (namespaced) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+  <!-- seu config -->
+  <script src="assets/config.js"></script>
+
+  <!-- lógica admin -->
+  <script src="assets/admin.js"></script>
+
+  <!-- drawer -->
+  <script>
+  (function(){
+    function qs(s,r){return (r||document).querySelector(s);}
+    function qsa(s,r){return (r||document).querySelectorAll(s);}
+    var htmlTag = document.documentElement;
+    function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
+    function openDrawer(){ htmlTag.classList.add("km-drawer-open"); }
+    function closeDrawer(){ htmlTag.classList.remove("km-drawer-open"); }
+    qsa(".hamburger").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        if(isMobile()){ e.preventDefault(); openDrawer(); }
+      });
+    });
+    var ov = qs("#kmDrawerOverlay");
+    if(ov) ov.addEventListener("click", closeDrawer);
+    qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
+  })();
+  </script>
+</body>
+</html>
