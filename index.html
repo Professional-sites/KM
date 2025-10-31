@@ -1,324 +1,252 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Catálogo — Home</title>
-<link href="assets/styles.css" rel="stylesheet"/>
-<script defer="" src="assets/products.js"></script>
-<script defer="" src="assets/home.js"></script>
-<script defer="" src="assets/i18n.js"></script>
-<style id="kmDrawerAllStyles">
-/* Hide drawer by default (desktop) */
-#kmDrawer, #kmDrawerOverlay { display: none; }
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Catálogo — Home</title>
+  <link href="assets/styles.css" rel="stylesheet"/>
 
-/* Mobile drawer styles */
-@media (max-width: 900px){
-  #kmDrawer, #kmDrawerOverlay { display: block; }
-  #kmDrawerOverlay{
-    position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
-    opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
-  }
-  #kmDrawer{
-    position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
-    background: rgba(255,255,255,0.92);
-    -webkit-backdrop-filter: saturate(140%) blur(2px);
-    backdrop-filter: saturate(140%) blur(2px);
-    box-shadow: 2px 0 18px rgba(0,0,0,.18);
-    transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
-    display:flex; flex-direction:column;
-  }
-  .km-drawer-open #kmDrawer{ transform: translateX(0); }
-  .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
+  <!-- scripts antigos do site -->
+  <script defer src="assets/products.js"></script>
+  <script defer src="assets/home.js"></script>
+  <script defer src="assets/i18n.js"></script>
 
-  #kmDrawerHeader{
-    padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-  }
-  #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
-  #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
+  <style id="kmDrawerAllStyles">
+  /* Hide drawer by default (desktop) */
+  #kmDrawer, #kmDrawerOverlay { display: none; }
 
-  #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
-  #kmDrawerNav a{
-    padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
-  }
-  #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
-}
-
-/* Desktop-only navbar tweaks: hide textual 'Voltar ao início'; force horizontal + blue */
-@media (min-width: 901px){
-  .km-home-link{ display:none !important; }
-
-  header nav ul, nav .menu, header .menu, .top-menu, .navbar, header nav, nav.primary {
-    display:flex;
-    gap:16px;
-    flex-wrap:nowrap;
-    align-items:center;
-  }
-  header nav a, nav a, .navbar a, .top-menu a, .menu a {
-    color:#1d4ed8;
-    white-space:nowrap;
-    display:inline-flex;
-    align-items:center;
-    text-decoration:none;
-  }
-  header nav a:hover, nav a:hover, .navbar a:hover, .top-menu a:hover, .menu a:hover {
-    color:#1e40af;
-  }
-}
-
-
-/* Mobile: hide any legacy/desktop menus so only the drawer is visible */
-@media (max-width: 900px){
-  header nav ul, header .menu, nav .menu, .top-menu, .navbar .menu, .navbar ul, .nav-desktop, .menu-desktop {
-    display: none !important;
-  }
-  /* If the site uses checkbox hack for mobile, keep those off-screen */
-  input[type="checkbox"][id*="menu"], input[type="checkbox"][class*="menu"]{
-    position: absolute;
-    left: -9999px;
-  }
-}
-</style></head>
-<body>
-<div class="header-wrap">
-<header>
-<div class="container top">
-<div class="brand">
-  <a href="admin.html" title="Painel administrativo">
-    <img alt="KM logo" src="assets/km-logo.jpg"/>
-  </a>
-  <div class="name"><span data-i18n="brand">KM</span></div>
-</div>
-<div class="search">
-<input data-i18n-placeholder="search_placeholder" placeholder="Pesquisar..." type="search"/><button class="go">🔍</button>
-</div>
-<nav class="nav">
-<a href="index.html"><span data-i18n="nav_home">Voltar ao início</span></a>
-<a href="sobre.html"><span data-i18n="nav_about">Sobre nós</span></a>
-<a href="produtos.html"><span data-i18n="nav_products">Produtos</span></a>
-<a href="onde-comprar.html"><span data-i18n="nav_where">Onde comprar</span></a>
-<a href="garantia.html"><span data-i18n="nav_warranty">Garantia</span></a>
-</nav>
-<div aria-label="Abrir menu" class="hamburger">☰</div>
-<div class="menu">
-<a href="index.html">KM — Início</a>
-<a href="sobre.html">Sobre nós</a>
-<a href="produtos.html">Produtos</a>
-<a href="onde-comprar.html">Onde comprar</a>
-<a href="garantia.html">Garantia</a>
-</div>
-</div>
-</header></div>
-<main class="container">
-<section class="hero">
-<div class="hero-slider">
-<div class="hero-track" id="heroTrack">
-<div class="hero-slide"><img alt="Destaque 1" src="assets/b1.svg"/></div>
-<div class="hero-slide"><img alt="Destaque 2" src="assets/b2.svg"/></div>
-<div class="hero-slide"><img alt="Destaque 3" src="assets/b3.svg"/></div>
-</div>
-<button aria-label="Anterior" class="hero-ctrl hero-prev">‹</button>
-<button aria-label="Próximo" class="hero-ctrl hero-next">›</button>
-<div class="hero-dots" id="heroDots"></div>
-</div>
-</section>
-<section class="section">
-<h2>Produtos em destaque</h2>
-<div class="cards-wrap">
-<div class="cards" id="cards"><!-- cards via JS --></div>
-</div>
-<div aria-hidden="true" class="dots"></div>
-</section>  
-<section class="produtos-exclusivos">
-  <h2>Exclusivos</h2>
-  <div id="exclusivosGrid" class="grid-produtos"></div>
-</section>
-<section class="section">
-<h2 data-i18n="new_products_title">Novos produtos</h2>
-<div class="cards-wrap">
-<div class="cards" id="newProducts"></div>
-</div>
-</section>
-<section class="section">
-<h2 data-i18n="new_brands_title">Novas marcas</h2>
-<div class="brands" id="brands">
-<div class="brand-card">MacroX</div>
-<div class="brand-card">Electra</div>
-<div class="brand-card">HyperCore</div>
-<div class="brand-card">NeonTech</div>
-<div class="brand-card">Aurora</div>
-</div>
-</section>
-<section class="section">
-<div class="newsletter">
-<h3 data-i18n="newsletter_title">Assine nossa newsletter</h3>
-<div class="nw-row">
-<input data-i18n-placeholder="newsletter_email" id="nwEmail" placeholder="Seu e-mail" type="email"/>
-<button data-i18n="newsletter_button" id="nwBtn">Quero receber</button>
-</div>
-<p class="muted" data-i18n="newsletter_desc" style="grid-column:1/-1;color:var(--muted)">Receba novidades, lançamentos e ofertas no seu e-mail.</p>
-</div>
-</section>
-</main>
-<footer>
-<div class="footer-inner">
-<div class="fcols">
-<div>
-<h4>Institucional</h4>
-<a href="#">Sobre a KM</a>
-<a href="#">Política de Privacidade</a>
-<a href="#">Trocas e Devoluções</a>
-</div>
-<div>
-<h4>Produtos</h4>
-<a href="produtos.html">Todos os produtos</a>
-<a href="#">Novidades</a>
-<a href="#">Mais procurados</a>
-</div>
-<div>
-<h4>Onde comprar</h4>
-<a href="onde-comprar.html">Lojas parceiras</a>
-<a href="#">Distribuidores</a>
-<a href="#">Atacado</a>
-</div>
-<div>
-<h4>Suporte</h4>
-<a href="garantia.html">Garantia</a>
-<a href="#">Central de ajuda</a>
-<a href="#">Contato</a>
-</div>
-</div>
-<div class="copy">© 2025 KM — Todos os direitos reservados.</div>
-</div>
-</footer>
-<script>
-  // Newsletter mock feedback
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const btn = document.getElementById('nwBtn');
-    const input = document.getElementById('nwEmail');
-    btn?.addEventListener('click', ()=>{
-      if(!input.value || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input.value)){
-        alert('Informe um e-mail válido.');
-        return;
-      }
-      alert('Inscrito com sucesso!');
-      input.value='';
-    });
-    // Language picker
-    document.querySelectorAll('.lang-picker button').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        document.querySelectorAll('.lang-picker button').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        setLang(b.dataset.lang);
-      });
-    });
-  });
-
-  // Fill "new products" carousel with last items
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const wrap = document.getElementById('newProducts');
-    if(!wrap || !window.PRODUCTS) return;
-    const items = window.PRODUCTS.slice().reverse();
-    items.forEach(p=>{
-      const card = document.createElement('article');
-      card.className='card';
-      card.innerHTML = `<img src="\${p.img}" alt="\${p.nome}"><h3>\${p.nome}</h3><p>\${p.desc}</p>`;
-      wrap.appendChild(card);
-    });
-  });
-</script>
-<script src="assets/subpages.js"></script>
-<div aria-hidden="true" id="kmDrawer">
-<div id="kmDrawerHeader">
-<a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
-<h3>Menu</h3>
-</div>
-<nav aria-label="Menu lateral" id="kmDrawerNav">
-<a href="index.html">Voltar ao início</a>
-<a href="sobre.html">Sobre nós</a>
-<a href="produtos.html">Produtos</a>
-<a href="onde-comprar.html">Onde comprar</a>
-<a href="index.html#contato">Contatos</a>
-</nav>
-</div>
-<div id="kmDrawerOverlay"></div>
-<script>
-// Mobile-only drawer: prevent other menus from opening
-(function(){
-  function qs(s,r){return (r||document).querySelector(s);}
-  function qsa(s,r){return (r||document).querySelectorAll(s);}
-  var htmlTag = document.documentElement;
-  var drawer = qs("#kmDrawer");
-  var overlay = qs("#kmDrawerOverlay");
-
-  function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
-
-  function openDrawer(){
-    htmlTag.classList.add("km-drawer-open");
-  }
-  function closeDrawer(){
-    htmlTag.classList.remove("km-drawer-open");
-  }
-
-  // Kill legacy toggles that might add classes/expand menus on mobile
-  function neutralizeLegacyMenu(e){
-    // prevent default anchor/label behavior
-    if(e){ 
-      e.preventDefault(); 
-      e.stopPropagation(); 
-      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+  /* Mobile drawer styles */
+  @media (max-width: 900px){
+    #kmDrawer, #kmDrawerOverlay { display: block; }
+    #kmDrawerOverlay{
+      position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
+      opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
     }
-    // Uncheck any menu-related checkboxes (checkbox hack)
-    qsa('input[type="checkbox"]').forEach(function(cb){
-      var id=(cb.id||"").toLowerCase(), cls=(cb.className||"").toLowerCase();
-      if(id.includes("menu") || id.includes("nav") || cls.includes("menu") || cls.includes("nav")){
-        cb.checked = false;
-      }
-    });
-    // Reset aria-expanded toggles in nav
-    qsa('nav [aria-expanded="true"]').forEach(function(el){ el.setAttribute("aria-expanded","false"); });
-    // Hide any dropdowns that might have been toggled
-    qsa("nav .open, .menu.open, .dropdown.open, .active").forEach(function(el){
-      var c=(el.className||"").toLowerCase();
-      if(c.includes("menu") || c.includes("dropdown") || c.includes("nav")){
-        el.classList.remove("open","active","show");
-        el.style.display = "none";
-      }
-    });
+    #kmDrawer{
+      position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
+      background: rgba(255,255,255,0.92);
+      -webkit-backdrop-filter: saturate(140%) blur(2px);
+      backdrop-filter: saturate(140%) blur(2px);
+      box-shadow: 2px 0 18px rgba(0,0,0,.18);
+      transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
+      display:flex; flex-direction:column;
+    }
+    .km-drawer-open #kmDrawer{ transform: translateX(0); }
+    .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
+
+    #kmDrawerHeader{
+      padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+    }
+    #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
+    #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
+
+    #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
+    #kmDrawerNav a{
+      padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
+    }
+    #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
   }
 
-  // Bind hamburger
-  var triggers = qsa("[data-hamburger], .hamburger, #hamburger, .menu-toggle, .btn-hamburger, label[for*='menu']");
-  triggers.forEach(function(btn){
-    btn.addEventListener("click", function(e){
-      if (isMobile()){
-        neutralizeLegacyMenu(e);
-        openDrawer();
-        return false;
-      }
-    }, true); // use capture to intercept early
-  });
+  /* Desktop-only navbar tweaks */
+  @media (min-width: 901px){
+    .km-home-link{ display:none !important; }
 
-  // Close actions
-  if(overlay){ overlay.addEventListener("click", closeDrawer); }
-  document.addEventListener("keydown", function(e){ if(e.key==="Escape"){ closeDrawer(); } });
-  qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
-
-  // Add a helper class on mobile for CSS overrides
-  function setMobileClass(){
-    if(isMobile()){ htmlTag.classList.add("km-mobile"); }
-    else{ htmlTag.classList.remove("km-mobile"); }
+    header nav ul, nav .menu, header .menu, .top-menu, .navbar, header nav, nav.primary {
+      display:flex;
+      gap:16px;
+      flex-wrap:nowrap;
+      align-items:center;
+    }
+    header nav a, nav a, .navbar a, .top-menu a, .menu a {
+      color:#1d4ed8;
+      white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      text-decoration:none;
+    }
+    header nav a:hover, nav a:hover, .navbar a:hover, .top-menu a:hover, .menu a:hover {
+      color:#1e40af;
+    }
   }
-  setMobileClass();
-  window.addEventListener("resize", setMobileClass);
-})();
-</script>
-<!-- Firebase para ler os produtos -->
-<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"></script>
-<script src="./js/config.js"></script>
-<script src="./js/app-produtos.js"></script>
 
+  /* Mobile: hide any legacy/desktop menus so only the drawer is visible */
+  @media (max-width: 900px){
+    header nav ul, header .menu, nav .menu, .top-menu, .navbar .menu, .navbar ul, .nav-desktop, .menu-desktop {
+      display: none !important;
+    }
+    input[type="checkbox"][id*="menu"], input[type="checkbox"][class*="menu"]{
+      position: absolute;
+      left: -9999px;
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="header-wrap">
+    <header>
+      <div class="container top">
+        <!-- LOGO → admin -->
+        <div class="brand">
+          <a href="admin.html">
+            <img alt="KM logo" src="assets/km-logo.jpg"/>
+          </a>
+          <div class="name"><span data-i18n="brand">KM</span></div>
+        </div>
+        <div class="search">
+          <input data-i18n-placeholder="search_placeholder" placeholder="Pesquisar..." type="search"/>
+          <button class="go">🔍</button>
+        </div>
+        <nav class="nav">
+          <a href="index.html"><span data-i18n="nav_home">Voltar ao início</span></a>
+          <a href="sobre.html"><span data-i18n="nav_about">Sobre nós</span></a>
+          <a href="produtos.html"><span data-i18n="nav_products">Produtos</span></a>
+          <a href="onde-comprar.html"><span data-i18n="nav_where">Onde comprar</span></a>
+          <a href="garantia.html"><span data-i18n="nav_warranty">Garantia</span></a>
+        </nav>
+        <div aria-label="Abrir menu" class="hamburger">☰</div>
+        <div class="menu">
+          <a href="index.html">KM — Início</a>
+          <a href="sobre.html">Sobre nós</a>
+          <a href="produtos.html">Produtos</a>
+          <a href="onde-comprar.html">Onde comprar</a>
+          <a href="garantia.html">Garantia</a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-slider">
+        <div class="hero-track" id="heroTrack">
+          <div class="hero-slide"><img alt="Destaque 1" src="assets/b1.svg"/></div>
+          <div class="hero-slide"><img alt="Destaque 2" src="assets/b2.svg"/></div>
+          <div class="hero-slide"><img alt="Destaque 3" src="assets/b3.svg"/></div>
+        </div>
+        <button aria-label="Anterior" class="hero-ctrl hero-prev">‹</button>
+        <button aria-label="Próximo" class="hero-ctrl hero-next">›</button>
+        <div class="hero-dots" id="heroDots"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Produtos em destaque</h2>
+      <div class="cards-wrap">
+        <div class="cards" id="cards"><!-- cards via JS --></div>
+      </div>
+    </section>
+
+    <!-- 🔽 NOVA SEÇÃO QUE LÊ DO FIRESTORE -->
+    <section class="section">
+      <h2>Exclusivos</h2>
+      <div id="exclusivosGrid" class="cards"></div>
+    </section>
+
+    <section class="section">
+      <h2 data-i18n="new_products_title">Novos produtos</h2>
+      <div class="cards-wrap">
+        <div class="cards" id="newProducts"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 data-i18n="new_brands_title">Novas marcas</h2>
+      <div class="brands" id="brands">
+        <div class="brand-card">MacroX</div>
+        <div class="brand-card">Electra</div>
+        <div class="brand-card">HyperCore</div>
+        <div class="brand-card">NeonTech</div>
+        <div class="brand-card">Aurora</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="newsletter">
+        <h3 data-i18n="newsletter_title">Assine nossa newsletter</h3>
+        <div class="nw-row">
+          <input data-i18n-placeholder="newsletter_email" id="nwEmail" placeholder="Seu e-mail" type="email"/>
+          <button data-i18n="newsletter_button" id="nwBtn">Quero receber</button>
+        </div>
+        <p class="muted" data-i18n="newsletter_desc" style="grid-column:1/-1;color:var(--muted)">Receba novidades, lançamentos e ofertas no seu e-mail.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="fcols">
+        <div>
+          <h4>Institucional</h4>
+          <a href="#">Sobre a KM</a>
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Trocas e Devoluções</a>
+        </div>
+        <div>
+          <h4>Produtos</h4>
+          <a href="produtos.html">Todos os produtos</a>
+          <a href="#">Novidades</a>
+          <a href="#">Mais procurados</a>
+        </div>
+        <div>
+          <h4>Onde comprar</h4>
+          <a href="onde-comprar.html">Lojas parceiras</a>
+          <a href="#">Distribuidores</a>
+          <a href="#">Atacado</a>
+        </div>
+        <div>
+          <h4>Suporte</h4>
+          <a href="garantia.html">Garantia</a>
+          <a href="#">Central de ajuda</a>
+          <a href="#">Contato</a>
+        </div>
+      </div>
+      <div class="copy">© 2025 KM — Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+  <!-- scripts originais -->
+  <script src="assets/subpages.js"></script>
+
+  <!-- drawer mobile -->
+  <div aria-hidden="true" id="kmDrawer">
+    <div id="kmDrawerHeader">
+      <a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
+      <h3>Menu</h3>
+    </div>
+    <nav aria-label="Menu lateral" id="kmDrawerNav">
+      <a href="index.html">Voltar ao início</a>
+      <a href="sobre.html">Sobre nós</a>
+      <a href="produtos.html">Produtos</a>
+      <a href="onde-comprar.html">Onde comprar</a>
+      <a href="index.html#contato">Contatos</a>
+      <a href="admin.html">Painel admin</a>
+    </nav>
+  </div>
+  <div id="kmDrawerOverlay"></div>
+  <script>
+  (function(){
+    function qs(s,r){return (r||document).querySelector(s);}
+    function qsa(s,r){return (r||document).querySelectorAll(s);}
+    var htmlTag = document.documentElement;
+    var overlay = qs("#kmDrawerOverlay");
+    function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
+    function openDrawer(){ htmlTag.classList.add("km-drawer-open"); }
+    function closeDrawer(){ htmlTag.classList.remove("km-drawer-open"); }
+    qsa(".hamburger, [data-hamburger]").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        if(isMobile()){ e.preventDefault(); openDrawer(); }
+      }, true);
+    });
+    if(overlay){ overlay.addEventListener("click", closeDrawer); }
+    qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
+  })();
+  </script>
+
+  <!-- 🔽 Firebase + config + leitor de produtos -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/app-produtos.js"></script>
 </body>
 </html>

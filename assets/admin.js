@@ -7,7 +7,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// sempre pedir login quando abrir a página
+// sempre pedir login
 auth.setPersistence(firebase.auth.Auth.Persistence.NONE);
 auth.signOut();
 
@@ -17,7 +17,6 @@ const adminGrid = document.getElementById("adminGrid");
 const msg = document.getElementById("msg");
 const btnLogin = document.getElementById("btnLogin");
 
-// login
 btnLogin.addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
@@ -29,7 +28,6 @@ btnLogin.addEventListener("click", async () => {
   }
 });
 
-// sessão
 auth.onAuthStateChanged((user) => {
   console.log("auth state:", user);
   if (user) {
