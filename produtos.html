@@ -7,64 +7,73 @@
 
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="stylesheet" href="assets/km.css" />
+
   <style>
-    /* ==== MELHORIAS MOBILE FILTROS ==== */
-    @media (max-width: 920px) {
-      .km-prod-filters {
-        position: fixed;
-        top: 0;
-        right: 0;
-        height: 100vh;
-        width: 80%;
-        max-width: 320px;
-        background: rgba(255,255,255,0.98);
-        box-shadow: -2px 0 12px rgba(0,0,0,0.2);
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        padding: 1.2rem;
-        z-index: 999;
-        overflow-y: auto;
-        border-radius: 12px 0 0 12px;
+    /* ===== FILTROS COMO MODAL (apenas MOBILE) ===== */
+    .km-filters-close{ display:none; }
+
+    @media (max-width:920px){
+      /* layout vira coluna; a sidebar vira modal */
+      .km-prod-layout{ display:block; }
+
+      /* backdrop do modal */
+      .km-filters-backdrop{
+        position:fixed; inset:0;
+        background:rgba(0,0,0,.45);
+        opacity:0; pointer-events:none;
+        transition:opacity .25s ease;
+        z-index:1090;
+      }
+      .km-filters-backdrop.show{ opacity:1; pointer-events:auto; }
+
+      /* a PRÓPRIA sidebar vira o modal central */
+      .km-prod-filters{
+        position:fixed;
+        left:50%; top:50%;
+        transform:translate(-50%,-50%) scale(.97);
+        width:92vw; max-width:420px;
+        max-height:80vh;
+        background:#fff;
+        border-radius:16px;
+        box-shadow:0 16px 40px rgba(0,0,0,.25);
+        padding:16px 16px 12px;
+        overflow:auto;
+        z-index:1100;
+        opacity:0; pointer-events:none;
+        transition:opacity .25s ease, transform .25s ease;
+      }
+      .km-prod-filters.show-mobile{
+        opacity:1; pointer-events:auto;
+        transform:translate(-50%,-50%) scale(1);
       }
 
-      .km-prod-filters.show-mobile {
-        transform: translateX(0);
+      /* botão X no topo direito */
+      .km-filters-close{
+        display:block;
+        position:absolute; top:10px; right:10px;
+        width:36px; height:36px;
+        border:none; background:#0b1a33; color:#fff;
+        border-radius:10px; font-size:20px; line-height:1;
+        cursor:pointer;
       }
 
-      .km-btn-close-filters {
-        display: block;
-        background: #0b1a33;
-        color: #fff;
-        border: none;
-        font-size: 1rem;
-        border-radius: 8px;
-        padding: 0.6rem 1rem;
-        margin-bottom: 1rem;
-        width: 100%;
-        cursor: pointer;
+      /* título e grupos visualmente agradáveis */
+      .km-prod-filters h2{
+        margin:4px 0 12px; text-align:center; color:#0b1a33;
+      }
+      .km-filter-block{
+        background:#f7f9fc; border:1px solid rgba(0,0,0,.05);
+        border-radius:12px; padding:10px 12px; margin-bottom:10px;
+      }
+      .km-filter-block h3{ margin:0 0 6px; color:#0b1a33; }
+      .km-btn-clear{
+        width:100%; margin-top:4px;
       }
 
-      .km-prod-filters h2 {
-        margin-top: 0;
-        text-align: center;
-        color: #0b1a33;
-        font-weight: 700;
-      }
-
-      .km-filter-block h3 {
-        color: #0b1a33;
-        margin-bottom: 0.4rem;
-        font-size: 1rem;
-      }
-
-      .km-btn-filter-mobile {
-        background: #0b1a33;
-        color: #fff;
-        padding: 0.6rem 1.2rem;
-        border-radius: 8px;
-        font-size: 1rem;
-        border: none;
-        cursor: pointer;
+      /* botão que abre o modal */
+      .km-btn-filter-mobile{
+        background:#0b1a33; color:#fff; border:none;
+        padding:.6rem 1.2rem; border-radius:10px; font-weight:600;
       }
     }
   </style>
@@ -121,9 +130,12 @@
     </div>
 
     <div class="km-prod-layout">
-      <!-- LATERAL DE FILTROS -->
+      <!-- BACKDROP do modal (só mobile) -->
+      <div id="kmFiltersBackdrop" class="km-filters-backdrop"></div>
+
+      <!-- LATERAL DE FILTROS (no mobile vira o MODAL central) -->
       <aside class="km-prod-filters" id="kmFilters">
-        <button class="km-btn-close-filters" id="kmCloseFilters">Fechar filtros ✕</button>
+        <button class="km-filters-close" id="kmCloseFilters" aria-label="Fechar filtros">×</button>
         <h2>Filtrar por</h2>
 
         <div class="km-filter-block">
@@ -146,9 +158,7 @@
       </aside>
 
       <!-- LISTA DE PRODUTOS -->
-      <section class="km-prod-list" id="kmProdList">
-        <!-- cards via js -->
-      </section>
+      <section class="km-prod-list" id="kmProdList"></section>
     </div>
   </main>
 
@@ -180,37 +190,51 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="assets/config.js"></script>
 
-  <!-- JS -->
+  <!-- JS da página -->
   <script src="assets/produtos-km.js"></script>
 
+  <!-- JS UI -->
   <script>
-    // Drawer
+    // Drawer (menu)
     const hb = document.getElementById('kmHamburger');
     const drawer = document.getElementById('kmDrawer');
     const overlay = document.getElementById('kmOverlay');
     const btnClose = document.getElementById('kmDrawerClose');
-
     function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
     function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
-
     if (hb) hb.onclick = openDrawer;
     if (overlay) overlay.onclick = closeDrawer;
     if (btnClose) btnClose.onclick = closeDrawer;
 
-    // Filtros mobile
+    // Filtros mobile (modal centralizado)
     const openFilters = document.getElementById('kmOpenFilters');
     const closeFilters = document.getElementById('kmCloseFilters');
     const filters = document.getElementById('kmFilters');
+    const filtersBackdrop = document.getElementById('kmFiltersBackdrop');
+
+    function openFiltersModal(){
+      filters.classList.add('show-mobile');
+      if (filtersBackdrop) filtersBackdrop.classList.add('show');
+      // trava scroll do body
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFiltersModal(){
+      filters.classList.remove('show-mobile');
+      if (filtersBackdrop) filtersBackdrop.classList.remove('show');
+      // libera scroll do body
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
 
     if (openFilters && filters){
-      openFilters.addEventListener('click', ()=> {
-        filters.classList.add('show-mobile');
-      });
+      openFilters.addEventListener('click', openFiltersModal);
     }
-    if (closeFilters && filters){
-      closeFilters.addEventListener('click', ()=> {
-        filters.classList.remove('show-mobile');
-      });
+    if (closeFilters){
+      closeFilters.addEventListener('click', closeFiltersModal);
+    }
+    if (filtersBackdrop){
+      filtersBackdrop.addEventListener('click', closeFiltersModal);
     }
   </script>
 </body>
