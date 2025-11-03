@@ -1,252 +1,217 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Catálogo — Home</title>
-  <link href="assets/styles.css" rel="stylesheet"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KM — Catálogo</title>
 
-  <!-- scripts antigos do site -->
-  <script defer src="assets/products.js"></script>
-  <script defer src="assets/home.js"></script>
-  <script defer src="assets/i18n.js"></script>
-
-  <style id="kmDrawerAllStyles">
-  /* Hide drawer by default (desktop) */
-  #kmDrawer, #kmDrawerOverlay { display: none; }
-
-  /* Mobile drawer styles */
-  @media (max-width: 900px){
-    #kmDrawer, #kmDrawerOverlay { display: block; }
-    #kmDrawerOverlay{
-      position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
-      opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
-    }
-    #kmDrawer{
-      position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
-      background: rgba(255,255,255,0.92);
-      -webkit-backdrop-filter: saturate(140%) blur(2px);
-      backdrop-filter: saturate(140%) blur(2px);
-      box-shadow: 2px 0 18px rgba(0,0,0,.18);
-      transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
-      display:flex; flex-direction:column;
-    }
-    .km-drawer-open #kmDrawer{ transform: translateX(0); }
-    .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
-
-    #kmDrawerHeader{
-      padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
-      display:flex; flex-direction:column; align-items:center; gap:10px;
-    }
-    #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
-    #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
-
-    #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
-    #kmDrawerNav a{
-      padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
-    }
-    #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
-  }
-
-  /* Desktop-only navbar tweaks */
-  @media (min-width: 901px){
-    .km-home-link{ display:none !important; }
-
-    header nav ul, nav .menu, header .menu, .top-menu, .navbar, header nav, nav.primary {
-      display:flex;
-      gap:16px;
-      flex-wrap:nowrap;
-      align-items:center;
-    }
-    header nav a, nav a, .navbar a, .top-menu a, .menu a {
-      color:#1d4ed8;
-      white-space:nowrap;
-      display:inline-flex;
-      align-items:center;
-      text-decoration:none;
-    }
-    header nav a:hover, nav a:hover, .navbar a:hover, .top-menu a:hover, .menu a:hover {
-      color:#1e40af;
-    }
-  }
-
-  /* Mobile: hide any legacy/desktop menus so only the drawer is visible */
-  @media (max-width: 900px){
-    header nav ul, header .menu, nav .menu, .top-menu, .navbar .menu, .navbar ul, .nav-desktop, .menu-desktop {
-      display: none !important;
-    }
-    input[type="checkbox"][id*="menu"], input[type="checkbox"][class*="menu"]{
-      position: absolute;
-      left: -9999px;
-    }
-  }
-  </style>
+  <!-- seus estilos -->
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/km.css" />
 </head>
 <body>
-  <div class="header-wrap">
-    <header>
-      <div class="container top">
-        <!-- LOGO → admin -->
-        <div class="brand">
-          <a href="admin.html">
-            <img alt="KM logo" src="assets/km-logo.jpg"/>
-          </a>
-          <div class="name"><span data-i18n="brand">KM</span></div>
-        </div>
-        <div class="search">
-          <input data-i18n-placeholder="search_placeholder" placeholder="Pesquisar..." type="search"/>
-          <button class="go">🔍</button>
-        </div>
-        <nav class="nav">
-          <a href="index.html"><span data-i18n="nav_home">Voltar ao início</span></a>
-          <a href="sobre.html"><span data-i18n="nav_about">Sobre nós</span></a>
-          <a href="produtos.html"><span data-i18n="nav_products">Produtos</span></a>
-          <a href="onde-comprar.html"><span data-i18n="nav_where">Onde comprar</span></a>
-          <a href="garantia.html"><span data-i18n="nav_warranty">Garantia</span></a>
-        </nav>
-        <div aria-label="Abrir menu" class="hamburger">☰</div>
-        <div class="menu">
-          <a href="index.html">KM — Início</a>
-          <a href="sobre.html">Sobre nós</a>
-          <a href="produtos.html">Produtos</a>
-          <a href="onde-comprar.html">Onde comprar</a>
-          <a href="garantia.html">Garantia</a>
-        </div>
-      </div>
-    </header>
-  </div>
+  <!-- HEADER FIXO / IGUAL PARA TODAS -->
+  <header class="km-topbar">
+    <div class="km-topbar-inner">
+      <!-- logo pequena → admin -->
+      <a href="admin.html" class="km-logo">
+        <img src="assets/km-logo.jpg" alt="KM" />
+      </a>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-slider">
-        <div class="hero-track" id="heroTrack">
-          <div class="hero-slide"><img alt="Destaque 1" src="assets/b1.svg"/></div>
-          <div class="hero-slide"><img alt="Destaque 2" src="assets/b2.svg"/></div>
-          <div class="hero-slide"><img alt="Destaque 3" src="assets/b3.svg"/></div>
-        </div>
-        <button aria-label="Anterior" class="hero-ctrl hero-prev">‹</button>
-        <button aria-label="Próximo" class="hero-ctrl hero-next">›</button>
-        <div class="hero-dots" id="heroDots"></div>
-      </div>
-    </section>
+      <!-- menu desktop -->
+      <nav class="km-nav-desktop">
+        <a href="index.html" class="active">Início</a>
+        <a href="sobre.html">Sobre nós</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="onde-comprar.html">Onde comprar</a>
+        <a href="garantia.html">Garantia</a>
+      </nav>
 
-    <section class="section">
-      <h2>Produtos em destaque</h2>
-      <div class="cards-wrap">
-        <div class="cards" id="cards"><!-- cards via JS --></div>
-      </div>
-    </section>
-
-    <!-- 🔽 NOVA SEÇÃO QUE LÊ DO FIRESTORE -->
-    <section class="section">
-      <h2>Exclusivos</h2>
-      <div id="exclusivosGrid" class="cards"></div>
-    </section>
-
-    <section class="section">
-      <h2 data-i18n="new_products_title">Novos produtos</h2>
-      <div class="cards-wrap">
-        <div class="cards" id="newProducts"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 data-i18n="new_brands_title">Novas marcas</h2>
-      <div class="brands" id="brands">
-        <div class="brand-card">MacroX</div>
-        <div class="brand-card">Electra</div>
-        <div class="brand-card">HyperCore</div>
-        <div class="brand-card">NeonTech</div>
-        <div class="brand-card">Aurora</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="newsletter">
-        <h3 data-i18n="newsletter_title">Assine nossa newsletter</h3>
-        <div class="nw-row">
-          <input data-i18n-placeholder="newsletter_email" id="nwEmail" placeholder="Seu e-mail" type="email"/>
-          <button data-i18n="newsletter_button" id="nwBtn">Quero receber</button>
-        </div>
-        <p class="muted" data-i18n="newsletter_desc" style="grid-column:1/-1;color:var(--muted)">Receba novidades, lançamentos e ofertas no seu e-mail.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-      <div class="fcols">
-        <div>
-          <h4>Institucional</h4>
-          <a href="#">Sobre a KM</a>
-          <a href="#">Política de Privacidade</a>
-          <a href="#">Trocas e Devoluções</a>
-        </div>
-        <div>
-          <h4>Produtos</h4>
-          <a href="produtos.html">Todos os produtos</a>
-          <a href="#">Novidades</a>
-          <a href="#">Mais procurados</a>
-        </div>
-        <div>
-          <h4>Onde comprar</h4>
-          <a href="onde-comprar.html">Lojas parceiras</a>
-          <a href="#">Distribuidores</a>
-          <a href="#">Atacado</a>
-        </div>
-        <div>
-          <h4>Suporte</h4>
-          <a href="garantia.html">Garantia</a>
-          <a href="#">Central de ajuda</a>
-          <a href="#">Contato</a>
-        </div>
-      </div>
-      <div class="copy">© 2025 KM — Todos os direitos reservados.</div>
+      <!-- hamburger mobile -->
+      <button class="km-hamburger" id="kmHamburger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </footer>
 
-  <!-- scripts originais -->
-  <script src="assets/subpages.js"></script>
-
-  <!-- drawer mobile -->
-  <div aria-hidden="true" id="kmDrawer">
-    <div id="kmDrawerHeader">
-      <a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
-      <h3>Menu</h3>
+    <!-- busca abaixo da barra -->
+    <div class="km-search-wrap">
+      <input type="search" id="kmSearch" placeholder="Pesquisar..." />
+      <button id="kmSearchBtn">🔍</button>
     </div>
-    <nav aria-label="Menu lateral" id="kmDrawerNav">
-      <a href="index.html">Voltar ao início</a>
+  </header>
+
+  <!-- DRAWER MOBILE -->
+  <aside class="km-drawer" id="kmDrawer">
+    <div class="km-drawer-head">
+      <img src="assets/km-logo.jpg" alt="KM" />
+      <button id="kmDrawerClose" aria-label="Fechar">×</button>
+    </div>
+    <nav class="km-drawer-nav">
+      <a href="index.html" class="active">Início</a>
       <a href="sobre.html">Sobre nós</a>
       <a href="produtos.html">Produtos</a>
       <a href="onde-comprar.html">Onde comprar</a>
-      <a href="index.html#contato">Contatos</a>
+      <a href="garantia.html">Garantia</a>
       <a href="admin.html">Painel admin</a>
     </nav>
-  </div>
-  <div id="kmDrawerOverlay"></div>
-  <script>
-  (function(){
-    function qs(s,r){return (r||document).querySelector(s);}
-    function qsa(s,r){return (r||document).querySelectorAll(s);}
-    var htmlTag = document.documentElement;
-    var overlay = qs("#kmDrawerOverlay");
-    function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
-    function openDrawer(){ htmlTag.classList.add("km-drawer-open"); }
-    function closeDrawer(){ htmlTag.classList.remove("km-drawer-open"); }
-    qsa(".hamburger, [data-hamburger]").forEach(function(btn){
-      btn.addEventListener("click", function(e){
-        if(isMobile()){ e.preventDefault(); openDrawer(); }
-      }, true);
-    });
-    if(overlay){ overlay.addEventListener("click", closeDrawer); }
-    qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
-  })();
-  </script>
+  </aside>
+  <div class="km-overlay" id="kmOverlay"></div>
 
-  <!-- 🔽 Firebase + config + leitor de produtos -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="assets/config.js"></script>
-  <script src="assets/app-produtos.js"></script>
+  <!-- CONTEÚDO -->
+  <main class="km-page">
+
+    <!-- HERO AZUL -->
+    <section class="km-hero">
+      <div class="km-hero-content">
+        <p class="km-hero-over">LINHA KM</p>
+        <h1>Hardware confiável, visual profissional.</h1>
+        <p class="km-hero-text">
+          Placas, memórias, SSDs e periféricos para todos os projetos.
+        </p>
+        <a href="produtos.html" class="km-btn-primary">Ver catálogo completo</a>
+      </div>
+      <div class="km-hero-img">
+        <img src="assets/b1.svg" alt="Destaque KM" />
+      </div>
+    </section>
+
+  <section class="km-cats">
+  <div class="km-cats-head">
+    <h2>Principais categorias</h2>
+    <div class="km-cats-arrows">
+      <button type="button" id="kmCatPrev">&lt;</button>
+      <button type="button" id="kmCatNext">&gt;</button>
+    </div>
+  </div>
+
+  <div class="km-cats-track" id="kmCatsTrack">
+    <!-- cada item tem data-cat com o nome que o Firestore usa -->
+    <button class="km-cat" type="button" data-cat="Placa Mae">
+      <img src="assets/b1.svg" alt="Placas-mãe">
+      <h3>Placas-mãe</h3>
+    </button>
+
+    <button class="km-cat" type="button" data-cat="memoria">
+      <img src="assets/b1.svg" alt="Memórias">
+      <h3>Memórias</h3>
+    </button>
+
+    <button class="km-cat" type="button" data-cat="monitores">
+      <img src="assets/b1.svg" alt="Monitores">
+      <h3>Monitores</h3>
+    </button>
+
+    <button class="km-cat" type="button" data-cat="armazenamento">
+      <img src="assets/b1.svg" alt="Armazenamento">
+      <h3>Armazenamento</h3>
+    </button>
+
+    <button class="km-cat" type="button" data-cat="acessorios">
+      <img src="assets/b1.svg" alt="Acessórios">
+      <h3>Acessórios</h3>
+    </button>
+  </div>
+</section>
+
+<script>
+  // redireciona categoria -> produtos.html?cat=...
+  document.querySelectorAll(".km-cat[data-cat]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const cat = btn.getAttribute("data-cat");
+      // se quiser abrir na mesma aba:
+      window.location.href = "produtos.html?cat=" + encodeURIComponent(cat);
+    });
+  });
+
+  // opcional: scrollzinho dos cards
+  const track = document.getElementById("kmCatsTrack");
+  const prev = document.getElementById("kmCatPrev");
+  const next = document.getElementById("kmCatNext");
+  if (track && prev && next) {
+    prev.addEventListener("click", () => track.scrollBy({left: -200, behavior: "smooth"}));
+    next.addEventListener("click", () => track.scrollBy({left: 200, behavior: "smooth"}));
+  }
+</script>
+
+
+    <!-- (REMOVIDO) BANNERS KM + "ITENS QUE VOCÊ POSTAR NO PAINEL" -->
+    <!-- (REMOVIDO) SEÇÃO "Novos lançamentos" + "Produtos destacados" -->
+
+    <!-- NEWSLETTER (se quiser pode manter) -->
+    <section class="km-news">
+      <h2>Fique por dentro das novidades</h2>
+      <p>Catálogo e lançamentos direto no seu e-mail.</p>
+      <div class="km-news-form">
+        <input type="email" id="nwEmail" placeholder="Seu e-mail" />
+        <button id="nwBtn">Quero receber</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="km-footer">
+    <div class="km-footer-inner">
+      <div>
+        <h4>Institucional</h4>
+        <a href="sobre.html">Sobre a KM</a>
+        <a href="onde-comprar.html">Onde comprar</a>
+        <a href="garantia.html">Garantia</a>
+      </div>
+      <div>
+        <h4>Produtos</h4>
+        <a href="produtos.html">Todos os produtos</a>
+      </div>
+      <div>
+        <h4>Painel</h4>
+        <a href="admin.html">Acessar admin</a>
+      </div>
+    </div>
+    <p class="km-copy">© 2025 KM — Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- JS BÁSICO (drawer + categorias deslizando + newsletter fake) -->
+  <script>
+    // drawer
+    const hb = document.getElementById('kmHamburger');
+    const drawer = document.getElementById('kmDrawer');
+    const overlay = document.getElementById('kmOverlay');
+    const closeBtn = document.getElementById('kmDrawerClose');
+
+    function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
+    function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
+
+    if (hb) hb.addEventListener('click', openDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+    // carrossel horizontal das categorias
+    const track = document.getElementById('kmCatsTrack');
+    const btnPrev = document.getElementById('kmCatsPrev');
+    const btnNext = document.getElementById('kmCatsNext');
+
+    if (track && btnPrev && btnNext){
+      btnPrev.addEventListener('click', () => {
+        track.scrollBy({ left: -180, behavior: 'smooth' });
+      });
+      btnNext.addEventListener('click', () => {
+        track.scrollBy({ left: 180, behavior: 'smooth' });
+      });
+    }
+
+    // newsletter de mentira
+    const nwBtn = document.getElementById('nwBtn');
+    const nwEmail = document.getElementById('nwEmail');
+    if (nwBtn && nwEmail){
+      nwBtn.addEventListener('click', () => {
+        if (!nwEmail.value){
+          alert('Informe um e-mail.');
+          return;
+        }
+        alert('Inscrito com sucesso!');
+        nwEmail.value = '';
+      });
+    }
+  </script>
 </body>
 </html>

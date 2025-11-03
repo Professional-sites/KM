@@ -1,251 +1,112 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Onde comprar</title>
-<link href="assets/styles.css" rel="stylesheet"/>
-<script defer="" src="assets/i18n.js"></script>
-<style id="kmDrawerAllStyles">
-/* Hide drawer by default (desktop) */
-#kmDrawer, #kmDrawerOverlay { display: none; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KM — Onde comprar</title>
 
-/* Mobile drawer styles */
-@media (max-width: 900px){
-  #kmDrawer, #kmDrawerOverlay { display: block; }
-  #kmDrawerOverlay{
-    position: fixed; inset:0; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px);
-    opacity:0; pointer-events:none; transition: opacity .25s ease; z-index: 998;
-  }
-  #kmDrawer{
-    position: fixed; top:0; left:0; height:100vh; width: 82vw; max-width: 360px;
-    background: rgba(255,255,255,0.92);
-    -webkit-backdrop-filter: saturate(140%) blur(2px);
-    backdrop-filter: saturate(140%) blur(2px);
-    box-shadow: 2px 0 18px rgba(0,0,0,.18);
-    transform: translateX(-100%); transition: transform .28s ease; z-index: 999;
-    display:flex; flex-direction:column;
-  }
-  .km-drawer-open #kmDrawer{ transform: translateX(0); }
-  .km-drawer-open #kmDrawerOverlay{ opacity:1; pointer-events:auto; }
-
-  #kmDrawerHeader{
-    padding: 20px 16px; border-bottom: 1px solid rgba(0,0,0,0.06);
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-  }
-  #kmDrawerHeader img{ height: 44px; width:auto; display:block; }
-  #kmDrawerHeader h3{ margin:0; font-size: 18px; font-weight:600; }
-
-  #kmDrawerNav{ display:flex; flex-direction:column; padding: 12px 8px; }
-  #kmDrawerNav a{
-    padding: 14px 12px; font-size: 16px; text-decoration:none; color:#1b1b1b; border-radius: 10px;
-  }
-  #kmDrawerNav a:hover{ background: rgba(0,0,0,0.05); }
-}
-
-/* Desktop-only navbar tweaks: hide textual 'Voltar ao início'; force horizontal + blue */
-@media (min-width: 901px){
-  .km-home-link{ display:none !important; }
-
-  header nav ul, nav .menu, header .menu, .top-menu, .navbar, header nav, nav.primary {
-    display:flex;
-    gap:16px;
-    flex-wrap:nowrap;
-    align-items:center;
-  }
-  header nav a, nav a, .navbar a, .top-menu a, .menu a {
-    color:#1d4ed8;
-    white-space:nowrap;
-    display:inline-flex;
-    align-items:center;
-    text-decoration:none;
-  }
-  header nav a:hover, nav a:hover, .navbar a:hover, .top-menu a:hover, .menu a:hover {
-    color:#1e40af;
-  }
-}
-
-
-/* Mobile: hide any legacy/desktop menus so only the drawer is visible */
-@media (max-width: 900px){
-  header nav ul, header .menu, nav .menu, .top-menu, .navbar .menu, .navbar ul, .nav-desktop, .menu-desktop {
-    display: none !important;
-  }
-  /* If the site uses checkbox hack for mobile, keep those off-screen */
-  input[type="checkbox"][id*="menu"], input[type="checkbox"][class*="menu"]{
-    position: absolute;
-    left: -9999px;
-  }
-}
-</style></head>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/km.css" />
+</head>
 <body>
-<div class="header-wrap">
-<header>
-<div class="container top">
-<div class="brand">
-  <a href="admin.html" title="Painel administrativo">
-    <img alt="KM logo" src="assets/km-logo.jpg"/>
-  </a>
-  <div class="name"><span data-i18n="brand">KM</span></div>
-</div>
-<div class="search">
-<input data-i18n-placeholder="search_placeholder" placeholder="Pesquisar..." type="search"/><button class="go">🔍</button>
-</div>
-<nav class="nav">
-<a href="index.html"><span data-i18n="nav_home">Voltar ao início</span></a>
-<a href="sobre.html"><span data-i18n="nav_about">Sobre nós</span></a>
-<a href="produtos.html"><span data-i18n="nav_products">Produtos</span></a>
-<a href="onde-comprar.html"><span data-i18n="nav_where">Onde comprar</span></a>
-<a href="garantia.html"><span data-i18n="nav_warranty">Garantia</span></a>
-</nav>
-<div aria-label="Abrir menu" class="hamburger">☰</div>
-<div class="menu">
-<a href="index.html">KM — Início</a>
-<a href="sobre.html">Sobre nós</a>
-<a href="produtos.html">Produtos</a>
-<a href="onde-comprar.html">Onde comprar</a>
-<a href="garantia.html">Garantia</a>
-</div>
-</div>
-</header></div>
-<main class="container">
-<section class="section">
-<h2>Onde comprar</h2>
-<p>Em breve: vendas diretas no site e em marketplaces parceiros.</p>
-<ul>
-<li>Site oficial (carrinho e checkout)</li>
-<li>Marketplace A</li>
-<li>Marketplace B</li>
-</ul>
-</section>
-</main>
-<footer>
-<div class="footer-inner">
-<div class="fcols">
-<div>
-<h4>Institucional</h4>
-<a href="#">Sobre a KM</a>
-<a href="#">Política de Privacidade</a>
-<a href="#">Trocas e Devoluções</a>
-</div>
-<div>
-<h4>Produtos</h4>
-<a href="produtos.html">Todos os produtos</a>
-<a href="#">Novidades</a>
-<a href="#">Mais procurados</a>
-</div>
-<div>
-<h4>Onde comprar</h4>
-<a href="onde-comprar.html">Lojas parceiras</a>
-<a href="#">Distribuidores</a>
-<a href="#">Atacado</a>
-</div>
-<div>
-<h4>Suporte</h4>
-<a href="garantia.html">Garantia</a>
-<a href="#">Central de ajuda</a>
-<a href="#">Contato</a>
-</div>
-</div>
-<div class="copy">© 2025 KM — Todos os direitos reservados.</div>
-</div>
-</footer>
-<script src="assets/subpages.js"></script>
-<script src="assets/subpages.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', ()=>{
-    document.querySelectorAll('.lang-picker button').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        document.querySelectorAll('.lang-picker button').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        setLang(b.dataset.lang);
-      });
-    });
-  });
-</script>
-<div aria-hidden="true" id="kmDrawer">
-<div id="kmDrawerHeader">
-<a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
-<h3>Menu</h3>
-</div>
-<nav aria-label="Menu lateral" id="kmDrawerNav">
-<a href="index.html">Voltar ao início</a>
-<a href="sobre.html">Sobre nós</a>
-<a href="produtos.html">Produtos</a>
-<a href="onde-comprar.html">Onde comprar</a>
-<a href="index.html#contato">Contatos</a>
-</nav>
-</div>
-<div id="kmDrawerOverlay"></div>
-<script>
-// Mobile-only drawer: prevent other menus from opening
-(function(){
-  function qs(s,r){return (r||document).querySelector(s);}
-  function qsa(s,r){return (r||document).querySelectorAll(s);}
-  var htmlTag = document.documentElement;
-  var drawer = qs("#kmDrawer");
-  var overlay = qs("#kmDrawerOverlay");
+  <!-- HEADER FIXO (copiado do index) -->
+  <header class="km-topbar">
+    <div class="km-topbar-inner">
+      <a href="admin.html" class="km-logo">
+        <img src="assets/km-logo.jpg" alt="KM">
+      </a>
 
-  function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
+      <nav class="km-nav-desktop">
+        <a href="index.html">Início</a>
+        <a href="sobre.html">Sobre nós</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="onde-comprar.html" class="active">Onde comprar</a>
+        <a href="garantia.html">Garantia</a>
+      </nav>
 
-  function openDrawer(){
-    htmlTag.classList.add("km-drawer-open");
-  }
-  function closeDrawer(){
-    htmlTag.classList.remove("km-drawer-open");
-  }
+      <button class="km-hamburger" id="kmHamburger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
-  // Kill legacy toggles that might add classes/expand menus on mobile
-  function neutralizeLegacyMenu(e){
-    // prevent default anchor/label behavior
-    if(e){ 
-      e.preventDefault(); 
-      e.stopPropagation(); 
-      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-    }
-    // Uncheck any menu-related checkboxes (checkbox hack)
-    qsa('input[type="checkbox"]').forEach(function(cb){
-      var id=(cb.id||"").toLowerCase(), cls=(cb.className||"").toLowerCase();
-      if(id.includes("menu") || id.includes("nav") || cls.includes("menu") || cls.includes("nav")){
-        cb.checked = false;
-      }
-    });
-    // Reset aria-expanded toggles in nav
-    qsa('nav [aria-expanded="true"]').forEach(function(el){ el.setAttribute("aria-expanded","false"); });
-    // Hide any dropdowns that might have been toggled
-    qsa("nav .open, .menu.open, .dropdown.open, .active").forEach(function(el){
-      var c=(el.className||"").toLowerCase();
-      if(c.includes("menu") || c.includes("dropdown") || c.includes("nav")){
-        el.classList.remove("open","active","show");
-        el.style.display = "none";
-      }
-    });
-  }
+    <div class="km-search-wrap">
+      <input type="search" id="kmSearch" placeholder="Pesquisar..." />
+      <button id="kmSearchBtn">🔍</button>
+    </div>
+  </header>
 
-  // Bind hamburger
-  var triggers = qsa("[data-hamburger], .hamburger, #hamburger, .menu-toggle, .btn-hamburger, label[for*='menu']");
-  triggers.forEach(function(btn){
-    btn.addEventListener("click", function(e){
-      if (isMobile()){
-        neutralizeLegacyMenu(e);
-        openDrawer();
-        return false;
-      }
-    }, true); // use capture to intercept early
-  });
+  <!-- MENU LATERAL MOBILE -->
+  <aside class="km-drawer" id="kmDrawer">
+    <div class="km-drawer-head">
+      <img src="assets/km-logo.jpg" alt="KM">
+      <button id="kmDrawerClose" aria-label="Fechar">×</button>
+    </div>
+    <nav class="km-drawer-nav">
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre nós</a>
+      <a href="produtos.html">Produtos</a>
+      <a href="onde-comprar.html" class="active">Onde comprar</a>
+      <a href="garantia.html">Garantia</a>
+      <a href="admin.html">Painel admin</a>
+    </nav>
+  </aside>
+  <div class="km-overlay" id="kmOverlay"></div>
 
-  // Close actions
-  if(overlay){ overlay.addEventListener("click", closeDrawer); }
-  document.addEventListener("keydown", function(e){ if(e.key==="Escape"){ closeDrawer(); } });
-  qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
+  <!-- CONTEÚDO -->
+  <main class="km-page">
+    <section class="km-section">
+      <h1>Onde comprar</h1>
+      <p>Encontre os produtos KM nos canais parceiros.</p>
+    </section>
 
-  // Add a helper class on mobile for CSS overrides
-  function setMobileClass(){
-    if(isMobile()){ htmlTag.classList.add("km-mobile"); }
-    else{ htmlTag.classList.remove("km-mobile"); }
-  }
-  setMobileClass();
-  window.addEventListener("resize", setMobileClass);
-})();
-</script></body>
+    <section class="km-section">
+      <h2>Lojas parceiras</h2>
+      <ul>
+        <li>Distribuidor região Sul — contato comercial</li>
+        <li>Loja online parceira — envio para todo Brasil</li>
+        <li>Revendas autorizadas — consulte disponibilidade</li>
+      </ul>
+    </section>
+
+    <section class="km-section">
+      <h2>Quer revender KM?</h2>
+      <p>Fale com o nosso time comercial para ter acesso ao catálogo atualizado.</p>
+      <p><a href="mailto:comercial@km.com">comercial@km.com</a></p>
+    </section>
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="km-footer">
+    <div class="km-footer-inner">
+      <div>
+        <h4>Institucional</h4>
+        <a href="sobre.html">Sobre a KM</a>
+        <a href="garantia.html">Garantia</a>
+        <a href="onde-comprar.html" class="active">Onde comprar</a>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <a href="mailto:contato@km.com">contato@km.com</a>
+      </div>
+      <div>
+        <h4>Painel</h4>
+        <a href="admin.html">Acessar admin</a>
+      </div>
+    </div>
+    <p class="km-copy">© 2025 KM — Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- JS DO DRAWER -->
+  <script>
+    const hb = document.getElementById('kmHamburger');
+    const drawer = document.getElementById('kmDrawer');
+    const overlay = document.getElementById('kmOverlay');
+    const closeBtn = document.getElementById('kmDrawerClose');
+    function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
+    function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
+    if (hb) hb.onclick = openDrawer;
+    if (overlay) overlay.onclick = closeDrawer;
+    if (closeBtn) closeBtn.onclick = closeDrawer;
+  </script>
+</body>
 </html>

@@ -1,90 +1,58 @@
-// assets/app-produtos.js
-// Lê produtos do Firestore e mostra na index (exclusivos) e na página produtos
+// assets/app-produtos-km.js
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.firestore();
 
-/* INDEX – EXCLUSIVOS */
-const exclusivosGrid = document.getElementById("exclusivosGrid");
-if (exclusivosGrid) {
+const boxNovos = document.getElementById("kmNovos");
+const boxDest = document.getElementById("kmDestacados");
+
+// NOVOS (últimos 8)
+if (boxNovos) {
   db.collection("produtos")
-    .where("exclusivo", "==", true)
     .orderBy("createdAt", "desc")
+    .limit(8)
     .onSnapshot((snap) => {
-      exclusivosGrid.innerHTML = "";
+      boxNovos.innerHTML = "";
       snap.forEach((doc) => {
         const p = doc.data();
-        const card = document.createElement("article");
-        card.className = "prod-card";
-        card.innerHTML = `
-          <div class="prod-img">
+        const art = document.createElement("article");
+        art.className = "km-prod";
+        art.innerHTML = `
+          <div class="km-prod-img">
             <img src="${p.imagemURL || 'assets/b1.svg'}" alt="${p.nome || ''}">
           </div>
-          <h3>${p.nome || "Sem nome"}</h3>
-          <p class="muted">${p.marca || ""} ${p.novo ? "• Novo" : ""}</p>
+          <h3 class="km-prod-title">${p.nome || 'Produto sem nome'}</h3>
+          <p class="km-prod-meta">${p.marca || ''} ${p.categoria ? '• '+p.categoria : ''}</p>
+          <a href="produto.html?id=${doc.id}">Ver mais</a>
         `;
-        exclusivosGrid.appendChild(card);
+        boxNovos.appendChild(art);
       });
     });
 }
 
-/* PRODUTOS – TODOS */
-const listaProdutos = document.getElementById("listaProdutos");
-const inputBusca = document.getElementById("buscaProd");
-
-if (listaProdutos) {
-  let todos = [];
-
+// DESTACADOS (exclusivo = true)
+if (boxDest) {
   db.collection("produtos")
+    .where("exclusivo", "==", true)
     .orderBy("createdAt", "desc")
+    .limit(12)
     .onSnapshot((snap) => {
-      todos = [];
+      boxDest.innerHTML = "";
       snap.forEach((doc) => {
-        todos.push({
-          id: doc.id,
-          ...doc.data(),
-        });
+        const p = doc.data();
+        const art = document.createElement("article");
+        art.className = "km-prod";
+        art.innerHTML = `
+          <div class="km-prod-img">
+            <img src="${p.imagemURL || 'assets/b2.svg'}" alt="${p.nome || ''}">
+          </div>
+          <h3 class="km-prod-title">${p.nome || 'Produto sem nome'}</h3>
+          <p class="km-prod-meta">${p.marca || ''} ${p.categoria ? '• '+p.categoria : ''}</p>
+          <a href="produto.html?id=${doc.id}">Ver mais</a>
+        `;
+        boxDest.appendChild(art);
       });
-      renderLista(todos);
     });
-
-  function renderLista(arr) {
-    listaProdutos.innerHTML = "";
-    arr.forEach((p) => {
-      const div = document.createElement("article");
-      div.className = "prod-card";
-      div.innerHTML = `
-        ${p.exclusivo ? '<span class="badge">Exclusivo</span>' : ""}
-        <div class="prod-img">
-          <img src="${p.imagemURL || 'assets/b2.svg'}" alt="${p.nome || ''}">
-        </div>
-        <h3>${p.nome || "Sem nome"}</h3>
-        <p class="muted">
-          ${p.marca || ""} ${p.categoria ? "• " + p.categoria : ""} ${p.novo ? "• Novo" : ""}
-        </p>
-      `;
-      listaProdutos.appendChild(div);
-    });
-  }
-
-  if (inputBusca) {
-    inputBusca.addEventListener("input", (e) => {
-      const term = e.target.value.toLowerCase();
-      const filtrados = todos.filter((p) => {
-        const nome = (p.nome || "").toLowerCase();
-        const marca = (p.marca || "").toLowerCase();
-        const cat = (p.categoria || "").toLowerCase();
-        const tags = Array.isArray(p.tags) ? p.tags.join(" ").toLowerCase() : "";
-        return (
-          nome.includes(term) ||
-          marca.includes(term) ||
-          cat.includes(term) ||
-          tags.includes(term)
-        );
-      });
-      renderLista(filtrados);
-    });
-  }
 }

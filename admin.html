@@ -7,130 +7,35 @@
   <link rel="stylesheet" href="assets/styles.css"/>
 
   <style>
-    .hero,
-    .hero-slider,
-    .hero-track,
-    .hero-slide,
-    .header-banner,
-    .top-hero,
-    .big-logo,
-    .home-hero {
-      display: none !important;
+    .hero, .hero-slider, .hero-track, .hero-slide,
+    .header-banner, .top-hero, .big-logo, .home-hero { display:none!important; }
+    .menu, .top .menu { display:none!important; }
+    body{ background:#eef3f8; min-height:100vh; }
+    .header-wrap{ position:fixed; top:0; left:0; right:0; z-index:999; }
+    .km-admin-wrap{ max-width:1200px; margin:0 auto; padding:120px 16px 40px; min-height:100vh; }
+    #loginBox{ background:#fff; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,.08); width:min(640px,100%); margin:0 auto; padding:30px 26px 26px; }
+    #loginBox h2{ margin-top:0; font-size:25px; color:#0f172a; }
+    #loginBox input{ width:100%; height:44px; border-radius:10px; border:1px solid rgba(15,23,42,.12); padding:0 12px; font-size:15px; margin-bottom:12px; background:#fff; }
+    #loginBox button{ width:100%; height:44px; background:#1d4ed8; border:none; border-radius:10px; color:#fff; font-weight:600; font-size:15px; cursor:pointer; }
+    #loginBox p#msg{ min-height:20px; margin-top:10px; color:#ef4444; }
+    #adminArea h1{ margin:0; font-size:26px; color:#0f172a; }
+    .km-admin-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; margin-top:18px; }
+    .km-admin-card{ background:#fff; border-radius:14px; box-shadow:0 6px 14px rgba(0,0,0,.04); padding:14px; display:flex; flex-direction:column; gap:6px; border:1px solid rgba(0,0,0,.02); }
+    .km-admin-card h3{ margin:0 0 4px; font-size:16px; }
+    .km-admin-card label{ font-size:12px; color:#475569; }
+    .km-admin-card input[type="text"], .km-admin-card textarea, .km-admin-card select, .km-admin-card input[type="file"]{
+      width:100%; border:1px solid rgba(15,23,42,.12); border-radius:10px; padding:7px 9px; font-size:13px; background:#fff;
     }
-    .menu,
-    .top .menu {
-      display: none !important;
-    }
-    body{
-      background: #eef3f8;
-      min-height: 100vh;
-    }
-    .header-wrap{
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-    }
-    .km-admin-wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 120px 16px 40px;
-      min-height: 100vh;
-    }
-    #loginBox{
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-      width: min(640px, 100%);
-      margin: 0 auto;
-      padding: 30px 26px 26px;
-    }
-    #loginBox h2{
-      margin-top: 0;
-      font-size: 25px;
-      color: #0f172a;
-    }
-    #loginBox input{
-      width: 100%;
-      height: 44px;
-      border-radius: 10px;
-      border: 1px solid rgba(15,23,42,.12);
-      padding: 0 12px;
-      font-size: 15px;
-      margin-bottom: 12px;
-      background: #fff;
-    }
-    #loginBox button{
-      width: 100%;
-      height: 44px;
-      background: #1d4ed8;
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    #loginBox p#msg{
-      min-height: 20px;
-      margin-top: 10px;
-      color: #ef4444;
-    }
-    #adminArea h1{
-      margin: 0;
-      font-size: 26px;
-      color: #0f172a;
-    }
-    .km-admin-grid{
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-    .km-admin-card{
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 6px 14px rgba(0,0,0,.04);
-      padding: 14px 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      border: 1px solid rgba(0,0,0,.02);
-    }
-    .km-admin-card h3{margin:0 0 4px;font-size:16px}
-    .km-admin-card label{font-size:12px;color:#475569}
-    .km-admin-card input[type="text"],
-    .km-admin-card textarea,
-    .km-admin-card select,
-    .km-admin-card input[type="file"]{
-      width: 100%;
-      border: 1px solid rgba(15,23,42,.12);
-      border-radius: 10px;
-      padding: 7px 9px;
-      font-size: 13px;
-      background: #fff;
-    }
-    .km-admin-card textarea{min-height:52px;resize:vertical}
-    .km-actions{display:flex;gap:8px;margin-top:6px}
-    .km-btn{border:none;border-radius:9px;padding:7px 10px;font-weight:600;cursor:pointer}
-    .km-btn.blue{background:#1d4ed8;color:#fff}
-    .km-btn.red{background:#ef4444;color:#fff}
-    .km-status{font-size:12px;min-height:16px}
-    @media (min-width: 901px){
-      #kmDrawer,
-      #kmDrawerOverlay{
-        display: none !important;
-      }
-    }
-    @media (max-width: 900px){
-      .km-admin-wrap{
-        padding-top: 120px;
-      }
-      .km-admin-card{
-        grid-column: 1 / -1;
-      }
-    }
+    .km-admin-card textarea{ min-height:52px; resize:vertical; }
+    .km-actions{ display:flex; gap:8px; margin-top:6px; }
+    .km-btn{ border:none; border-radius:9px; padding:7px 10px; font-weight:600; cursor:pointer; }
+    .km-btn.blue{ background:#1d4ed8; color:#fff; }
+    .km-btn.red{ background:#ef4444; color:#fff; }
+    .km-status{ font-size:12px; min-height:16px; }
+    .km-badges{ display:flex; gap:6px; flex-wrap:wrap; }
+    .km-badge{ font-size:11px; background:#eef2ff; color:#1d4ed8; border-radius:999px; padding:2px 8px; }
+    @media (min-width:901px){ #kmDrawer,#kmDrawerOverlay{ display:none!important; } }
+    @media (max-width:900px){ .km-admin-wrap{ padding-top:120px; } .km-admin-card{ grid-column:1 / -1; } }
   </style>
 </head>
 <body>
@@ -138,14 +43,11 @@
     <header>
       <div class="container top">
         <div class="brand">
-          <a href="admin.html" title="Painel admin">
-            <img alt="KM logo" src="assets/km-logo.jpg"/>
-          </a>
+          <a href="admin.html"><img alt="KM logo" src="assets/km-logo.jpg"/></a>
           <div class="name"><span>KM</span></div>
         </div>
         <div class="search">
-          <input placeholder="Pesquisar..." type="search"/>
-          <button class="go">🔍</button>
+          <input placeholder="Pesquisar..." type="search"/><button class="go">🔍</button>
         </div>
         <nav class="nav">
           <a href="index.html">Voltar ao início</a>
@@ -154,7 +56,7 @@
           <a href="onde-comprar.html">Onde comprar</a>
           <a href="garantia.html">Garantia</a>
         </nav>
-        <div aria-label="Abrir menu" class="hamburger">☰</div>
+        <div class="hamburger">☰</div>
         <div class="menu">
           <a href="index.html">KM — Início</a>
           <a href="sobre.html">Sobre nós</a>
@@ -166,23 +68,11 @@
     </header>
   </div>
 
-  <div aria-hidden="true" id="kmDrawer">
-    <div id="kmDrawerHeader">
-      <a aria-label="Início" href="index.html"><img alt="Logo" src="assets/km-logo.jpg"/></a>
-      <h3>Menu</h3>
-    </div>
-    <nav aria-label="Menu lateral" id="kmDrawerNav">
-      <a href="index.html">Voltar ao início</a>
-      <a href="sobre.html">Sobre nós</a>
-      <a href="produtos.html">Produtos</a>
-      <a href="onde-comprar.html">Onde comprar</a>
-      <a href="index.html#contato">Contatos</a>
-      <a href="admin.html">Painel admin</a>
-    </nav>
-  </div>
-  <div id="kmDrawerOverlay" aria-hidden="true"></div>
+  <div id="kmDrawer"><nav id="kmDrawerNav"></nav></div>
+  <div id="kmDrawerOverlay"></div>
 
   <main class="km-admin-wrap">
+    <!-- LOGIN -->
     <div id="loginBox">
       <h2>Login do administrador</h2>
       <input id="email" type="email" placeholder="Email do admin">
@@ -191,38 +81,203 @@
       <p id="msg"></p>
     </div>
 
+    <!-- ÁREA ADMIN -->
     <div id="adminArea" style="display:none;">
-      <h1>Cadastro de produtos (200 bancos)</h1>
-      <p>Preencha qualquer card e clique em <b>Salvar</b>. Vai direto pro Firestore.</p>
+      <h1>Cadastro de produtos (1 banco)</h1>
+      <p>Preencha o formulário e clique em <b>Salvar</b>. Para remover um item já cadastrado, use <b>Excluir</b>.</p>
+
       <div id="adminGrid" class="km-admin-grid"></div>
     </div>
   </main>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-
   <script src="assets/config.js"></script>
-  <script src="assets/admin.js"></script>
 
   <script>
-  (function(){
-    function qs(s,r){return (r||document).querySelector(s);}
-    function qsa(s,r){return (r||document).querySelectorAll(s);}
-    var htmlTag = document.documentElement;
-    var overlay = qs("#kmDrawerOverlay");
-    function isMobile(){ return window.matchMedia("(max-width: 900px)").matches; }
-    function openDrawer(){ htmlTag.classList.add("km-drawer-open"); }
-    function closeDrawer(){ htmlTag.classList.remove("km-drawer-open"); }
-    qsa(".hamburger").forEach(function(btn){
-      btn.addEventListener("click", function(e){
-        if(isMobile()){ e.preventDefault(); openDrawer(); }
-      }, true);
+  // Init
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  const loginBox = document.getElementById('loginBox');
+  const adminArea = document.getElementById('adminArea');
+  const adminGrid = document.getElementById('adminGrid');
+
+  const email = document.getElementById('email');
+  const senha = document.getElementById('senha');
+  const msg = document.getElementById('msg');
+  const btnLogin = document.getElementById('btnLogin');
+
+  btnLogin.onclick = async ()=>{
+    msg.textContent = "Entrando...";
+    try{
+      await auth.signInWithEmailAndPassword(email.value, senha.value);
+      msg.textContent = "";
+      loginBox.style.display = "none";
+      adminArea.style.display = "block";
+      carregarProdutos();
+    }catch(e){
+      console.error(e);
+      msg.textContent = "Falha no login.";
+    }
+  };
+
+  // --- 1 banco vazio com Tipo, Especificações e Tags ---
+  function criarBancoVazio(){
+    const card = document.createElement("div");
+    card.className = "km-admin-card";
+    card.innerHTML = `
+      <h3>Novo Produto</h3>
+
+      <label>Nome</label>
+      <input type="text" id="nome" placeholder="Ex.: Placa-mãe KM X570">
+
+      <label>Marca</label>
+      <input type="text" id="marca" placeholder="Ex.: KM">
+
+      <label>Categoria</label>
+      <input type="text" id="categoria" placeholder="Ex.: Placa Mãe">
+
+      <label>Descrição detalhada</label>
+      <textarea id="descricao" placeholder="Texto completo do produto"></textarea>
+
+      <label>Especificações (uma por linha)</label>
+      <textarea id="especificacoes" placeholder="- Soquete AM4&#10;- 4x DIMM DDR4&#10;- VRM 10 fases"></textarea>
+
+      <label>Tags (separadas por vírgula)</label>
+      <input type="text" id="tags" placeholder="ex.: gamer, am4, km, rgb">
+
+      <label>Tipo</label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <select id="tipo">
+          <option value="normal" selected>Normal</option>
+          <option value="exclusivo">Exclusivo</option>
+        </select>
+        <label style="display:inline-flex;gap:6px;align-items:center;">
+          <input type="checkbox" id="novo"> Item novo
+        </label>
+      </div>
+
+      <label>Imagem</label>
+      <input type="file" id="imagem" accept="image/*">
+
+      <div class="km-actions">
+        <button class="km-btn blue" id="salvar">Salvar</button>
+      </div>
+      <p class="km-status" id="status"></p>
+    `;
+    adminGrid.appendChild(card);
+
+    card.querySelector("#salvar").onclick = async ()=>{
+      const nome = card.querySelector("#nome").value.trim();
+      if(!nome){ alert("Preencha o nome."); return; }
+
+      // coleta campos
+      const marca = card.querySelector("#marca").value.trim();
+      const categoria = card.querySelector("#categoria").value.trim();
+      const descricao = card.querySelector("#descricao").value.trim();
+      const tipo = card.querySelector("#tipo").value; // normal|exclusivo
+      const novo = card.querySelector("#novo").checked;
+
+      // especificações: 1 por linha -> array
+      const especificacoes = card.querySelector("#especificacoes").value
+        .split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+
+      // tags: vírgulas -> array
+      const tags = card.querySelector("#tags").value
+        .split(",").map(s=>s.trim()).filter(Boolean);
+
+      const data = {
+        nome, marca, categoria, descricao,
+        tipo, exclusivo: (tipo === 'exclusivo'), novo,
+        especificacoes, tags,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // cria doc
+      const ref = await db.collection("produtos").add(data);
+
+      // upload imagem (opcional)
+      const file = card.querySelector("#imagem").files[0];
+      if(file){
+        const path = `produtos/${ref.id}/${file.name}`;
+        const snap = await storage.ref(path).put(file);
+        const url = await snap.ref.getDownloadURL();
+        await ref.update({ imagemURL:url, storagePath:path });
+      }
+
+      alert("Produto salvo com sucesso!");
+      carregarProdutos();
+    };
+  }
+
+  // Lista de produtos salvos + botão Excluir
+  async function carregarProdutos(){
+    adminGrid.innerHTML = "";
+    criarBancoVazio(); // mantém 1 banco vazio no topo
+
+    const snap = await db.collection("produtos").orderBy("createdAt","desc").get();
+    snap.forEach(doc=>{
+      const p = doc.data();
+      const card = document.createElement("div");
+      card.className = "km-admin-card";
+      card.innerHTML = `
+        <h3>${p.nome||"Sem nome"}</h3>
+        <div class="km-badges">
+          ${p.tipo ? `<span class="km-badge">${p.tipo}</span>` : ``}
+          ${p.novo ? `<span class="km-badge">novo</span>` : ``}
+        </div>
+        <label>${p.marca||""} ${p.categoria?("• "+p.categoria):""}</label>
+        ${p.imagemURL ? `<img src="${p.imagemURL}" style="width:100%;border-radius:10px;">` : ""}
+
+        ${Array.isArray(p.especificacoes)&&p.especificacoes.length?`
+          <div>
+            <label>Especificações</label>
+            <ul style="margin:6px 0 0 16px;">
+              ${p.especificacoes.map(li=>`<li>${li}</li>`).join("")}
+            </ul>
+          </div>`:""}
+
+        ${Array.isArray(p.tags)&&p.tags.length?`
+          <div class="km-badges">
+            ${p.tags.map(t=>`<span class="km-badge">${t}</span>`).join("")}
+          </div>`:""}
+
+        <div class="km-actions">
+          <button class="km-btn red" data-del="${doc.id}">Excluir</button>
+        </div>
+      `;
+      adminGrid.appendChild(card);
     });
-    if(overlay){ overlay.addEventListener("click", closeDrawer); }
-    qsa("#kmDrawerNav a").forEach(function(a){ a.addEventListener("click", closeDrawer); });
-  })();
+  }
+
+  // Excluir produto (Firestore + imagem no Storage, se houver)
+  document.addEventListener("click", async e=>{
+    const id = e.target.dataset.del;
+    if(!id) return;
+    if(!confirm("Deseja excluir este produto permanentemente?")) return;
+    try{
+      const ref = db.collection("produtos").doc(id);
+      const snap = await ref.get();
+      if(snap.exists){
+        const data = snap.data();
+        if(data.storagePath){
+          await storage.ref(data.storagePath).delete().catch(()=>{});
+        }
+        await ref.delete();
+        alert("Produto excluído com sucesso!");
+        carregarProdutos();
+      }
+    }catch(err){
+      console.error(err);
+      alert("Erro ao excluir.");
+    }
+  });
   </script>
 </body>
 </html>
