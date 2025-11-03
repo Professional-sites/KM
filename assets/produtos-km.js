@@ -15,7 +15,7 @@ const chkExcl = document.getElementById("kmFilterExclusivo");
 const chkNovo = document.getElementById("kmFilterNovo");
 const btnClear= document.getElementById("kmClearFilters");
 
-// ---------- MODAL (opcional) ----------
+// ---------- MODAL ----------
 const modalOverlay = document.getElementById("kmModalOverlay") || null;
 const modalClose   = document.getElementById("kmModalClose")   || null;
 const modalImg     = document.getElementById("kmModalImg")     || null;
@@ -52,12 +52,50 @@ let allProducts = [];
 let activeCategory = null; // clique no filtro lateral
 let activeMarca = null;
 
+// ---------- HOVER ZOOM (desktop) ----------
+function attachHoverZoom(imgEl){
+  const wrapper = imgEl && imgEl.closest(".km-zoom");
+  if (!wrapper || !imgEl) return;
+
+  // Desativa em telas pequenas
+  const isSmall = () => window.matchMedia("(max-width: 920px)").matches;
+
+  function enter(){
+    if (isSmall()) return;
+    imgEl.style.transform = "scale(1.6)";
+    imgEl.style.transformOrigin = "center center";
+  }
+  function move(e){
+    if (isSmall()) return;
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const px = (x / rect.width) * 100;
+    const py = (y / rect.height) * 100;
+    imgEl.style.transformOrigin = `${px}% ${py}%`;
+  }
+  function leave(){
+    imgEl.style.transform = "scale(1)";
+    imgEl.style.transformOrigin = "center center";
+  }
+
+  // Garante estilos base
+  wrapper.style.overflow = "hidden";
+  wrapper.style.position = "relative";
+  imgEl.style.transition = "transform .2s ease";
+
+  wrapper.addEventListener("mouseenter", enter);
+  wrapper.addEventListener("mousemove", move);
+  wrapper.addEventListener("mouseleave", leave);
+}
+
+function wireAllHoverZoom(){
+  document.querySelectorAll(".km-zoom > img").forEach(attachHoverZoom);
+}
+
 // ---------- MODAL ----------
 function openModal(prod){
-  if (!modalOverlay) {
-    // se não tiver modal no HTML, não quebra
-    return;
-  }
+  if (!modalOverlay) return;
 
   if (modalTitle) modalTitle.textContent = prod.nome || "Produto KM";
   if (modalDesc)  modalDesc.textContent  = prod.descricaoDetalhada || prod.descricao || "Sem descrição disponível.";
@@ -113,6 +151,9 @@ function openModal(prod){
 
   modalOverlay.style.display = "block";
   document.body.style.overflow = "hidden";
+
+  // ativa zoom no modal
+  if (modalImg) attachHoverZoom(modalImg);
 }
 
 function closeModal(){
@@ -143,7 +184,7 @@ function renderProducts(arr){
       const card = document.createElement("article");
       card.className = "km-prod-card";
       card.innerHTML = `
-        <div class="km-prod-card-img">
+        <div class="km-prod-card-img km-zoom">
           <img src="${p.imagemURL || 'assets/b1.svg'}" alt="${p.nome || ''}">
         </div>
         <h3>${p.nome || 'Sem nome'}</h3>
@@ -152,6 +193,9 @@ function renderProducts(arr){
       `;
       listEl.appendChild(card);
     });
+
+    // hover-zoom nos cards
+    wireAllHoverZoom();
 
     // ligar botões de ver mais
     listEl.querySelectorAll(".km-prod-link").forEach(a=>{
@@ -224,7 +268,7 @@ function applyFilters(){
     filtered = filtered.filter(p => norm(p.categoria) === preCatKey);
   }
 
-  // 2) cliques nos filtros laterais (valores "bonitos")
+  // 2) cliques nos filtros laterais (valores exatos)
   if (activeCategory){
     filtered = filtered.filter(p => p.categoria === activeCategory);
   }

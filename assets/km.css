@@ -836,3 +836,21 @@ body{
 /* Esconde controles/pontinhos do destaque (hero) */
 .hero-ctrl,
 .hero-dots { display: none !important; }
+/* === Hover Zoom em imagens (desktop) === */
+@media (hover:hover) {
+  .km-zoom {
+    position: relative;
+    overflow: hidden;
+  }
+  .km-zoom img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform .25s ease, transform-origin .1s ease;
+    will-change: transform, transform-origin;
+  }
+  .km-zoom.is-zoomed img {
+    transform: scale(1.8);   /* ajuste o fator de zoom se quiser */
+    cursor: zoom-in;
+  }
+}

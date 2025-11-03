@@ -7,12 +7,72 @@
 
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="stylesheet" href="assets/km.css" />
+  <style>
+    /* ==== MELHORIAS MOBILE FILTROS ==== */
+    @media (max-width: 920px) {
+      .km-prod-filters {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 80%;
+        max-width: 320px;
+        background: rgba(255,255,255,0.98);
+        box-shadow: -2px 0 12px rgba(0,0,0,0.2);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        padding: 1.2rem;
+        z-index: 999;
+        overflow-y: auto;
+        border-radius: 12px 0 0 12px;
+      }
+
+      .km-prod-filters.show-mobile {
+        transform: translateX(0);
+      }
+
+      .km-btn-close-filters {
+        display: block;
+        background: #0b1a33;
+        color: #fff;
+        border: none;
+        font-size: 1rem;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        margin-bottom: 1rem;
+        width: 100%;
+        cursor: pointer;
+      }
+
+      .km-prod-filters h2 {
+        margin-top: 0;
+        text-align: center;
+        color: #0b1a33;
+        font-weight: 700;
+      }
+
+      .km-filter-block h3 {
+        color: #0b1a33;
+        margin-bottom: 0.4rem;
+        font-size: 1rem;
+      }
+
+      .km-btn-filter-mobile {
+        background: #0b1a33;
+        color: #fff;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- HEADER IGUAL AO INDEX -->
   <header class="km-topbar">
     <div class="km-topbar-inner">
-      <!-- logo leva pro admin -->
       <a href="admin.html" class="km-logo">
         <img src="assets/km-logo.jpg" alt="KM">
       </a>
@@ -52,34 +112,28 @@
 
   <!-- CONTEÚDO -->
   <main class="km-page km-prod-page">
-    <!-- título + contador -->
     <div class="km-prod-head">
       <div>
         <h1>Todos os produtos</h1>
         <p id="kmProdCount">Carregando...</p>
       </div>
-      <!-- filtro rápido mobile -->
       <button class="km-btn-filter-mobile" id="kmOpenFilters">Filtros</button>
     </div>
 
     <div class="km-prod-layout">
       <!-- LATERAL DE FILTROS -->
       <aside class="km-prod-filters" id="kmFilters">
+        <button class="km-btn-close-filters" id="kmCloseFilters">Fechar filtros ✕</button>
         <h2>Filtrar por</h2>
 
         <div class="km-filter-block">
           <h3>Categorias</h3>
-          <!-- VOLTEI pros IDs que você já usava -->
-          <ul id="kmFilterCategorias">
-            <!-- preenchido via js -->
-          </ul>
+          <ul id="kmFilterCategorias"></ul>
         </div>
 
         <div class="km-filter-block">
           <h3>Marcas</h3>
-          <ul id="kmFilterMarcas">
-            <!-- preenchido via js -->
-          </ul>
+          <ul id="kmFilterMarcas"></ul>
         </div>
 
         <div class="km-filter-block">
@@ -102,25 +156,16 @@
   <div id="kmModalOverlay" class="km-modal-overlay" style="display:none;">
     <div class="km-modal">
       <button id="kmModalClose" class="km-modal-close" aria-label="Fechar">×</button>
-
       <div class="km-modal-body">
-        <div class="km-modal-imgwrap">
+        <div class="km-modal-media km-zoom">
           <img id="kmModalImg" src="assets/b1.svg" alt="Produto KM">
         </div>
         <div class="km-modal-content">
           <h2 id="kmModalTitle">Produto KM</h2>
-          <p id="kmModalDesc" class="km-modal-desc">
-            Descrição do produto vai aparecer aqui.
-          </p>
-
+          <p id="kmModalDesc" class="km-modal-desc">Descrição do produto vai aparecer aqui.</p>
           <h3 class="km-modal-subtitle">Especificações</h3>
-          <ul id="kmModalSpecs" class="km-modal-specs">
-            <!-- specs via js -->
-          </ul>
-
-          <div class="km-modal-tags" id="kmModalTags">
-            <!-- tags via js -->
-          </div>
+          <ul id="kmModalSpecs" class="km-modal-specs"></ul>
+          <div class="km-modal-tags" id="kmModalTags"></div>
         </div>
       </div>
     </div>
@@ -130,35 +175,21 @@
     <p class="km-copy">© 2025 KM — Todos os direitos reservados.</p>
   </footer>
 
-  <!-- MODAL DE DETALHES DO PRODUTO -->
-<div id="kmModalOverlay" class="km-modal-overlay" style="display:none;">
-  <div class="km-modal">
-    <button id="kmModalClose" class="km-modal-close" aria-label="Fechar">×</button>
-    <div class="km-modal-content">
-      <img id="kmModalImg" src="" alt="Produto" class="km-modal-img">
-      <h2 id="kmModalTitle">Nome do produto</h2>
-      <p id="kmModalDesc">Descrição detalhada do produto aparecerá aqui.</p>
-      <h3>Especificações</h3>
-      <ul id="kmModalSpecs"></ul>
-      <div id="kmModalTags" class="km-modal-tags"></div>
-    </div>
-  </div>
-</div>
-
-  <!-- FIREBASE (v8, igual você já usa) -->
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="assets/config.js"></script>
 
-  <!-- VOLTAMOS pro seu JS que já funcionava -->
+  <!-- JS -->
   <script src="assets/produtos-km.js"></script>
 
-  <!-- JS UI (drawer, mobile filtros) -->
   <script>
+    // Drawer
     const hb = document.getElementById('kmHamburger');
     const drawer = document.getElementById('kmDrawer');
     const overlay = document.getElementById('kmOverlay');
     const btnClose = document.getElementById('kmDrawerClose');
+
     function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
     function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
 
@@ -166,15 +197,21 @@
     if (overlay) overlay.onclick = closeDrawer;
     if (btnClose) btnClose.onclick = closeDrawer;
 
-    // mobile filtros
+    // Filtros mobile
     const openFilters = document.getElementById('kmOpenFilters');
+    const closeFilters = document.getElementById('kmCloseFilters');
     const filters = document.getElementById('kmFilters');
+
     if (openFilters && filters){
-      openFilters.addEventListener('click', ()=>{
-        filters.classList.toggle('show-mobile');
+      openFilters.addEventListener('click', ()=> {
+        filters.classList.add('show-mobile');
+      });
+    }
+    if (closeFilters && filters){
+      closeFilters.addEventListener('click', ()=> {
+        filters.classList.remove('show-mobile');
       });
     }
   </script>
 </body>
 </html>
-s
