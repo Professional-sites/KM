@@ -833,3 +833,6 @@ body{
   from { opacity: 0; transform: scale(.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+/* Esconde controles/pontinhos do destaque (hero) */
+.hero-ctrl,
+.hero-dots { display: none !important; }

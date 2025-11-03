@@ -36,6 +36,41 @@
     .km-badge{ font-size:11px; background:#eef2ff; color:#1d4ed8; border-radius:999px; padding:2px 8px; }
     @media (min-width:901px){ #kmDrawer,#kmDrawerOverlay{ display:none!important; } }
     @media (max-width:900px){ .km-admin-wrap{ padding-top:120px; } .km-admin-card{ grid-column:1 / -1; } }
+
+    /* ===== Drawer mobile (novo) ===== */
+    #kmDrawer{
+      position:fixed; top:0; left:0;
+      width:78vw; max-width:320px; height:100vh;
+      background:#fff;
+      box-shadow:4px 0 18px rgba(0,0,0,.12);
+      transform:translateX(-100%);
+      transition:transform .25s ease;
+      z-index:1300;
+      display:flex; flex-direction:column;
+    }
+    #kmDrawer.open{ transform:translateX(0); }
+    #kmDrawerHeader{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 12px 8px;
+      border-bottom:1px solid rgba(0,0,0,.06);
+    }
+    #kmDrawerHeader img{ height:36px; }
+    #kmDrawerHeader button{
+      background:transparent; border:none; font-size:26px; cursor:pointer; line-height:1;
+    }
+    #kmDrawerNav{ padding:10px; display:flex; flex-direction:column; gap:4px; }
+    #kmDrawerNav a{
+      display:block; padding:10px 12px; text-decoration:none; color:#0f172a; border-radius:10px;
+    }
+    #kmDrawerNav a:hover{ background:rgba(29,78,216,.08); }
+    #kmDrawerOverlay{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.25);
+      opacity:0; pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:1200;
+    }
+    #kmDrawerOverlay.show{ opacity:1; pointer-events:auto; }
   </style>
 </head>
 <body>
@@ -68,6 +103,7 @@
     </header>
   </div>
 
+  <!-- Drawer/overlay já existentes -->
   <div id="kmDrawer"><nav id="kmDrawerNav"></nav></div>
   <div id="kmDrawerOverlay"></div>
 
@@ -177,18 +213,15 @@
       const nome = card.querySelector("#nome").value.trim();
       if(!nome){ alert("Preencha o nome."); return; }
 
-      // coleta campos
       const marca = card.querySelector("#marca").value.trim();
       const categoria = card.querySelector("#categoria").value.trim();
       const descricao = card.querySelector("#descricao").value.trim();
-      const tipo = card.querySelector("#tipo").value; // normal|exclusivo
+      const tipo = card.querySelector("#tipo").value;
       const novo = card.querySelector("#novo").checked;
 
-      // especificações: 1 por linha -> array
       const especificacoes = card.querySelector("#especificacoes").value
         .split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
 
-      // tags: vírgulas -> array
       const tags = card.querySelector("#tags").value
         .split(",").map(s=>s.trim()).filter(Boolean);
 
@@ -199,10 +232,8 @@
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      // cria doc
       const ref = await db.collection("produtos").add(data);
 
-      // upload imagem (opcional)
       const file = card.querySelector("#imagem").files[0];
       if(file){
         const path = `produtos/${ref.id}/${file.name}`;
@@ -216,10 +247,9 @@
     };
   }
 
-  // Lista de produtos salvos + botão Excluir
   async function carregarProdutos(){
     adminGrid.innerHTML = "";
-    criarBancoVazio(); // mantém 1 banco vazio no topo
+    criarBancoVazio();
 
     const snap = await db.collection("produtos").orderBy("createdAt","desc").get();
     snap.forEach(doc=>{
@@ -256,7 +286,6 @@
     });
   }
 
-  // Excluir produto (Firestore + imagem no Storage, se houver)
   document.addEventListener("click", async e=>{
     const id = e.target.dataset.del;
     if(!id) return;
@@ -278,6 +307,45 @@
       alert("Erro ao excluir.");
     }
   });
+  </script>
+
+  <!-- ===== Script do drawer mobile (novo, não altera nada além do menu) ===== -->
+  <script>
+    (function(){
+      const hb = document.querySelector('.hamburger');
+      const drawer = document.getElementById('kmDrawer');
+      const overlay = document.getElementById('kmDrawerOverlay');
+      const nav = document.getElementById('kmDrawerNav');
+
+      // Preenche o nav se estiver vazio (usa as mesmas rotas do topo)
+      if (nav && !nav.childElementCount){
+        nav.innerHTML = `
+          <a href="index.html">Voltar ao início</a>
+          <a href="sobre.html">Sobre nós</a>
+          <a href="produtos.html">Produtos</a>
+          <a href="onde-comprar.html">Onde comprar</a>
+          <a href="garantia.html">Garantia</a>
+          <a href="admin.html">Painel admin</a>
+        `;
+      }
+
+      // Cria header/fechar dentro do drawer se não existir
+      if (!document.getElementById('kmDrawerHeader') && drawer){
+        const head = document.createElement('div');
+        head.id = 'kmDrawerHeader';
+        head.innerHTML = `<img src="assets/km-logo.jpg" alt="KM"><button type="button" id="kmDrawerClose">×</button>`;
+        drawer.insertBefore(head, nav);
+      }
+      const btnClose = document.getElementById('kmDrawerClose');
+
+      function open(){ if(drawer&&overlay){ drawer.classList.add('open'); overlay.classList.add('show'); } }
+      function close(){ if(drawer&&overlay){ drawer.classList.remove('open'); overlay.classList.remove('show'); } }
+
+      if (hb) hb.addEventListener('click', function(e){ e.preventDefault(); open(); }, true);
+      if (overlay) overlay.addEventListener('click', close);
+      if (btnClose) btnClose.addEventListener('click', close);
+      if (nav) nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+    })();
   </script>
 </body>
 </html>

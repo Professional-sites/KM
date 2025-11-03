@@ -24,21 +24,33 @@ const modalDesc    = document.getElementById("kmModalDesc")    || null;
 const modalSpecs   = document.getElementById("kmModalSpecs")   || null;
 const modalTagsBox = document.getElementById("kmModalTags")    || null;
 
+// ---------- UTILS (normalização/URL) ----------
+function stripAccents(s){
+  try { return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  catch(e){ return (s||""); }
+}
+function norm(s){
+  return stripAccents(s).toLowerCase().replace(/\s+/g," ").trim();
+}
+function getParam(name){
+  try { return new URLSearchParams(window.location.search).get(name); }
+  catch(e){ return null; }
+}
+function removeQueryParam(param){
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.delete(param);
+    window.history.replaceState({}, "", url.toString());
+  } catch(e){}
+}
+
+// chave de categoria (normalizada) vinda da URL, ex.: ?cat=memoria
+let preCatKey = norm(getParam("cat") || "");
+
 // ---------- ESTADO ----------
 let allProducts = [];
-let activeCategory = null;
+let activeCategory = null; // clique no filtro lateral
 let activeMarca = null;
-
-// ler ?cat= da URL
-(function readCategoryFromURL(){
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const cat = params.get("cat");
-    if (cat) {
-      activeCategory = cat;
-    }
-  } catch(e) {}
-})();
 
 // ---------- MODAL ----------
 function openModal(prod){
@@ -148,7 +160,6 @@ function renderProducts(arr){
         const id = a.getAttribute("data-id");
         const prod = allProducts.find(p => p.id === id);
         if (!prod) return;
-        // se tiver modal, abre; se não tiver, vai pra pagina de detalhes (se você criar no futuro)
         if (modalOverlay) {
           openModal(prod);
         } else {
@@ -208,12 +219,20 @@ function renderFiltersFromData(produtos){
 function applyFilters(){
   let filtered = [...allProducts];
 
+  // 1) categoria vinda da URL (normalizada)
+  if (preCatKey){
+    filtered = filtered.filter(p => norm(p.categoria) === preCatKey);
+  }
+
+  // 2) cliques nos filtros laterais (valores "bonitos")
   if (activeCategory){
     filtered = filtered.filter(p => p.categoria === activeCategory);
   }
   if (activeMarca){
     filtered = filtered.filter(p => p.marca === activeMarca);
   }
+
+  // 3) checkboxes
   if (chkExcl && chkExcl.checked){
     filtered = filtered.filter(p => p.exclusivo === true);
   }
@@ -240,13 +259,18 @@ if (btnClear) btnClear.addEventListener("click", ()=>{
   activeMarca = null;
   if (chkExcl) chkExcl.checked = false;
   if (chkNovo) chkNovo.checked = false;
+
+  // limpa o ?cat= da URL e ignora filtro inicial
+  preCatKey = "";
+  removeQueryParam("cat");
+
   // mostra tudo de novo
   renderProducts(allProducts);
 });
 
 // ---------- SNAPSHOT ----------
 db.collection("produtos")
-  // se o seu firestore tiver produto sem createdAt, remove o orderBy abaixo
+  // se o seu firestore tiver produto sem createdAt, remova o orderBy abaixo
   .orderBy("createdAt", "desc")
   .onSnapshot((snap)=>{
     allProducts = [];
@@ -259,8 +283,9 @@ db.collection("produtos")
     // monta filtros
     renderFiltersFromData(allProducts);
 
-    // se existe categoria vinda da URL ou checkbox ligado, filtra
+    // sempre aplica para considerar ?cat= ou filtros marcados
     const temFiltroLigado =
+      preCatKey ||
       activeCategory ||
       activeMarca ||
       (chkExcl && chkExcl.checked) ||

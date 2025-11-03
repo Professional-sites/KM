@@ -71,7 +71,7 @@
         <a href="produtos.html" class="km-btn-primary">Ver catálogo completo</a>
       </div>
       <div class="km-hero-img">
-        <img src="assets/b1.svg" alt="Destaque KM" />
+        <img id="kmHeroImg" src="assets/b1.svg" alt="Destaque KM" />
       </div>
     </section>
 
@@ -86,33 +86,43 @@
       </div>
 
       <div class="km-cats-track" id="kmCatsTrack">
-        <!-- cada item tem data-cat com o nome que o Firestore usa -->
-        <button class="km-cat" type="button" data-cat="Placa Mae">
-          <img src="assets/b1.svg" alt="Placas-mãe">
-          <h3>Placas-mãe</h3>
-        </button>
+  <!-- data-cat recebe a CHAVE normalizada; o <h3> pode continuar bonito -->
+  <button class="km-cat" type="button" data-cat="placa-mae">
+    <img src="assets/b1.svg" alt="Placas-mãe">
+    <h3>Placas-mãe</h3>
+  </button>
 
-        <button class="km-cat" type="button" data-cat="memoria">
-          <img src="assets/b1.svg" alt="Memórias">
-          <h3>Memórias</h3>
-        </button>
+  <button class="km-cat" type="button" data-cat="memoria">
+    <img src="assets/b1.svg" alt="Memórias">
+    <h3>Memórias</h3>
+  </button>
 
-        <button class="km-cat" type="button" data-cat="monitores">
-          <img src="assets/b1.svg" alt="Monitores">
-          <h3>Monitores</h3>
-        </button>
+  <button class="km-cat" type="button" data-cat="monitores">
+    <img src="assets/b1.svg" alt="Monitores">
+    <h3>Monitores</h3>
+  </button>
 
-        <button class="km-cat" type="button" data-cat="armazenamento">
-          <img src="assets/b1.svg" alt="Armazenamento">
-          <h3>Armazenamento</h3>
-        </button>
+  <button class="km-cat" type="button" data-cat="armazenamento">
+    <img src="assets/b1.svg" alt="Armazenamento">
+    <h3>Armazenamento</h3>
+  </button>
 
-        <button class="km-cat" type="button" data-cat="acessorios">
-          <img src="assets/b1.svg" alt="Acessórios">
-          <h3>Acessórios</h3>
-        </button>
-      </div>
-    </section>
+  <button class="km-cat" type="button" data-cat="acessorios">
+    <img src="assets/b1.svg" alt="Acessórios">
+    <h3>Acessórios</h3>
+  </button>
+</div>
+
+<script>
+  // redireciona categoria -> produtos.html?cat=<chave>
+  document.querySelectorAll(".km-cat[data-cat]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const catKey = btn.getAttribute("data-cat"); // já está normalizado
+      window.location.href = "produtos.html?cat=" + encodeURIComponent(catKey);
+    });
+  });
+</script>
+</section>
 
     <!-- NEWSLETTER -->
     <section class="km-news">
