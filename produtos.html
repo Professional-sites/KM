@@ -8,73 +8,26 @@
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="stylesheet" href="assets/km.css" />
 
+  <!-- Estilos leves para os minifiltros (selects) e correção do X no desktop -->
   <style>
-    /* ===== FILTROS COMO MODAL (apenas MOBILE) ===== */
-    .km-filters-close{ display:none; }
+    .km-mini-selects { display:grid; gap:8px; grid-template-columns:1fr; }
+    .km-mini-selects .row { display:grid; gap:6px; }
+    .km-mini-selects label { font-size:.82rem; color:#0f172a; }
+    .km-mini-select {
+      appearance:none; width:100%; height:36px; padding:0 12px;
+      border:1px solid #e5e7eb; border-radius:10px; background:#fff;
+      font-weight:600; color:#0f3f74; cursor:pointer;
+      background-image: linear-gradient(45deg, transparent 50%, #0f3f74 50%), linear-gradient(135deg, #0f3f74 50%, transparent 50%);
+      background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
+      background-size: 6px 6px, 6px 6px; background-repeat:no-repeat;
+    }
+    /* escondemos as caixinhas antigas mas mantemos no DOM pro JS */
+    .km-filter-checkboxes { display:none !important; }
 
-    @media (max-width:920px){
-      /* layout vira coluna; a sidebar vira modal */
-      .km-prod-layout{ display:block; }
-
-      /* backdrop do modal */
-      .km-filters-backdrop{
-        position:fixed; inset:0;
-        background:rgba(0,0,0,.45);
-        opacity:0; pointer-events:none;
-        transition:opacity .25s ease;
-        z-index:1090;
-      }
-      .km-filters-backdrop.show{ opacity:1; pointer-events:auto; }
-
-      /* a PRÓPRIA sidebar vira o modal central */
-      .km-prod-filters{
-        position:fixed;
-        left:50%; top:50%;
-        transform:translate(-50%,-50%) scale(.97);
-        width:92vw; max-width:420px;
-        max-height:80vh;
-        background:#fff;
-        border-radius:16px;
-        box-shadow:0 16px 40px rgba(0,0,0,.25);
-        padding:16px 16px 12px;
-        overflow:auto;
-        z-index:1100;
-        opacity:0; pointer-events:none;
-        transition:opacity .25s ease, transform .25s ease;
-      }
-      .km-prod-filters.show-mobile{
-        opacity:1; pointer-events:auto;
-        transform:translate(-50%,-50%) scale(1);
-      }
-
-      /* botão X no topo direito */
-      .km-filters-close{
-        display:block;
-        position:absolute; top:10px; right:10px;
-        width:36px; height:36px;
-        border:none; background:#0b1a33; color:#fff;
-        border-radius:10px; font-size:20px; line-height:1;
-        cursor:pointer;
-      }
-
-      /* título e grupos visualmente agradáveis */
-      .km-prod-filters h2{
-        margin:4px 0 12px; text-align:center; color:#0b1a33;
-      }
-      .km-filter-block{
-        background:#f7f9fc; border:1px solid rgba(0,0,0,.05);
-        border-radius:12px; padding:10px 12px; margin-bottom:10px;
-      }
-      .km-filter-block h3{ margin:0 0 6px; color:#0b1a33; }
-      .km-btn-clear{
-        width:100%; margin-top:4px;
-      }
-
-      /* botão que abre o modal */
-      .km-btn-filter-mobile{
-        background:#0b1a33; color:#fff; border:none;
-        padding:.6rem 1.2rem; border-radius:10px; font-weight:600;
-      }
+    /* Força esconder o botão X no desktop */
+    @media (min-width:921px){
+      #kmFiltersClose { display:none !important; }
+      .km-mini-selects { grid-template-columns:1fr 1fr; }
     }
   </style>
 </head>
@@ -111,7 +64,7 @@
     <nav class="km-drawer-nav">
       <a href="index.html">Início</a>
       <a href="sobre.html">Sobre nós</a>
-      <a href="produtos.html">Produtos</a>
+      <a href="produtos.html" class="active">Produtos</a>
       <a href="onde-comprar.html">Onde comprar</a>
       <a href="garantia.html">Garantia</a>
       <a href="admin.html">Painel admin</a>
@@ -130,35 +83,59 @@
     </div>
 
     <div class="km-prod-layout">
-      <!-- BACKDROP do modal (só mobile) -->
-      <div id="kmFiltersBackdrop" class="km-filters-backdrop"></div>
-
-      <!-- LATERAL DE FILTROS (no mobile vira o MODAL central) -->
+      <!-- LATERAL / MODAL DE FILTROS -->
       <aside class="km-prod-filters" id="kmFilters">
-        <button class="km-filters-close" id="kmCloseFilters" aria-label="Fechar filtros">×</button>
-        <h2>Filtrar por</h2>
+        <div class="km-filters-head">
+          <span class="km-filters-title">Filtrar por</span>
+          <!-- X só no mobile (forçado a sumir no desktop acima) -->
+          <button type="button" class="km-filters-close" id="kmFiltersClose" aria-label="Fechar filtros">×</button>
+        </div>
 
         <div class="km-filter-block">
           <h3>Categorias</h3>
-          <ul id="kmFilterCategorias"></ul>
+          <ul id="kmFilterCategorias"><!-- via JS --></ul>
         </div>
 
         <div class="km-filter-block">
           <h3>Marcas</h3>
-          <ul id="kmFilterMarcas"></ul>
+          <ul id="kmFilterMarcas"><!-- via JS --></ul>
         </div>
 
         <div class="km-filter-block">
           <h3>Tipo</h3>
-          <label><input type="checkbox" value="exclusivo" id="kmFilterExclusivo"> Exclusivos</label>
-          <label><input type="checkbox" value="novo" id="kmFilterNovo"> Itens novos</label>
+
+          <!-- NOVOS MINIFILTROS -->
+          <div class="km-mini-selects" aria-label="Filtros rápidos">
+            <div class="row">
+              <label for="kmSelectEx">Exibição</label>
+              <select id="kmSelectEx" class="km-mini-select">
+                <option value="todos">Todos</option>
+                <option value="exclusivos">Exclusivos</option>
+                <option value="comum">Comum</option>
+              </select>
+            </div>
+            <div class="row">
+              <label for="kmSelectNv">Status</label>
+              <select id="kmSelectNv" class="km-mini-select">
+                <option value="todos">Todos</option>
+                <option value="novos">Novos</option>
+                <option value="padrao">Padrão</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Checkboxes originais (ocultos) preservados para o JS -->
+          <div class="km-filter-checkboxes" style="display:none">
+            <label><input type="checkbox" value="exclusivo" id="kmFilterExclusivo"> Exclusivos</label>
+            <label><input type="checkbox" value="novo" id="kmFilterNovo"> Itens novos</label>
+          </div>
         </div>
 
         <button id="kmClearFilters" class="km-btn-clear">Limpar filtros</button>
       </aside>
 
       <!-- LISTA DE PRODUTOS -->
-      <section class="km-prod-list" id="kmProdList"></section>
+      <section class="km-prod-list" id="kmProdList"><!-- cards via js --></section>
     </div>
   </main>
 
@@ -167,7 +144,7 @@
     <div class="km-modal">
       <button id="kmModalClose" class="km-modal-close" aria-label="Fechar">×</button>
       <div class="km-modal-body">
-        <div class="km-modal-media km-zoom">
+        <div class="km-modal-media" id="kmModalMedia">
           <img id="kmModalImg" src="assets/b1.svg" alt="Produto KM">
         </div>
         <div class="km-modal-content">
@@ -193,48 +170,43 @@
   <!-- JS da página -->
   <script src="assets/produtos-km.js"></script>
 
-  <!-- JS UI -->
+  <!-- UI: menu, filtros mobile, selects sincronizados e zoom desktop -->
   <script>
-    // Drawer (menu)
+    /* ===== Drawer (menu) ===== */
     const hb = document.getElementById('kmHamburger');
     const drawer = document.getElementById('kmDrawer');
     const overlay = document.getElementById('kmOverlay');
     const btnClose = document.getElementById('kmDrawerClose');
-    function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
-    function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
+    const openDrawer = ()=>{ drawer.classList.add('open'); overlay.classList.add('show'); };
+    const closeDrawer = ()=>{ drawer.classList.remove('open'); overlay.classList.remove('show'); };
     if (hb) hb.onclick = openDrawer;
     if (overlay) overlay.onclick = closeDrawer;
     if (btnClose) btnClose.onclick = closeDrawer;
 
-    // Filtros mobile (modal centralizado)
-    const openFilters = document.getElementById('kmOpenFilters');
-    const closeFilters = document.getElementById('kmCloseFilters');
+    /* ===== Filtros como MODAL no mobile ===== */
+    const openFiltersBtn = document.getElementById('kmOpenFilters');
     const filters = document.getElementById('kmFilters');
-    const filtersBackdrop = document.getElementById('kmFiltersBackdrop');
+    const filtersClose = document.getElementById('kmFiltersClose');
+    const filtersOv = document.createElement('div');
+    filtersOv.className = 'km-filters-overlay';
+    document.body.appendChild(filtersOv);
+    const isMobile = () => matchMedia('(max-width: 920px)').matches;
+    function openFilters(){ if(!isMobile()) return; filters.classList.add('show-mobile'); filtersOv.classList.add('show'); document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; }
+    function closeFilters(){ filters.classList.remove('show-mobile'); filtersOv.classList.remove('show'); document.documentElement.style.overflow=''; document.body.style.overflow=''; }
+    if (openFiltersBtn) openFiltersBtn.addEventListener('click', openFilters);
+    if (filtersClose)   filtersClose.addEventListener('click', closeFilters);
+    filtersOv.addEventListener('click', closeFilters);
+    window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeFilters(); });
 
-    function openFiltersModal(){
-      filters.classList.add('show-mobile');
-      if (filtersBackdrop) filtersBackdrop.classList.add('show');
-      // trava scroll do body
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-    }
-    function closeFiltersModal(){
-      filters.classList.remove('show-mobile');
-      if (filtersBackdrop) filtersBackdrop.classList.remove('show');
-      // libera scroll do body
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-    }
-
-    if (openFilters && filters){
-      openFilters.addEventListener('click', openFiltersModal);
-    }
-    if (closeFilters){
-      closeFilters.addEventListener('click', closeFiltersModal);
-    }
-    if (filtersBackdrop){
-      filtersBackdrop.addEventListener('click', closeFiltersModal);
+    /* ===== Selects → sincronizam “limpar filtros” ===== */
+    const selEx = document.getElementById('kmSelectEx');
+    const selNv = document.getElementById('kmSelectNv');
+    const btnClear = document.getElementById('kmClearFilters');
+    if (btnClear){
+      btnClear.addEventListener('click', ()=>{
+        if (selEx) selEx.value = 'todos';
+        if (selNv) selNv.value = 'todos';
+      });
     }
   </script>
 </body>

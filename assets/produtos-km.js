@@ -11,11 +11,18 @@ const listEl  = document.getElementById("kmProdList");
 const countEl = document.getElementById("kmProdCount");
 const catEl   = document.getElementById("kmFilterCategorias");
 const marcaEl = document.getElementById("kmFilterMarcas");
+
+// checkboxes (mantidos para compatibilidade, podem ficar escondidos)
 const chkExcl = document.getElementById("kmFilterExclusivo");
 const chkNovo = document.getElementById("kmFilterNovo");
+
+// NOVOS selects
+const selEx   = document.getElementById("kmSelectEx"); // todos | exclusivos | comum
+const selNv   = document.getElementById("kmSelectNv"); // todos | novos | padrao
+
 const btnClear= document.getElementById("kmClearFilters");
 
-// ---------- MODAL ----------
+// ---------- MODAL (opcional) ----------
 const modalOverlay = document.getElementById("kmModalOverlay") || null;
 const modalClose   = document.getElementById("kmModalClose")   || null;
 const modalImg     = document.getElementById("kmModalImg")     || null;
@@ -24,7 +31,7 @@ const modalDesc    = document.getElementById("kmModalDesc")    || null;
 const modalSpecs   = document.getElementById("kmModalSpecs")   || null;
 const modalTagsBox = document.getElementById("kmModalTags")    || null;
 
-// ---------- UTILS (normalização/URL) ----------
+// ---------- UTILS ----------
 function stripAccents(s){
   try { return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
   catch(e){ return (s||""); }
@@ -44,7 +51,7 @@ function removeQueryParam(param){
   } catch(e){}
 }
 
-// chave de categoria (normalizada) vinda da URL, ex.: ?cat=memoria
+// categoria vinda da URL, ex.: ?cat=memoria
 let preCatKey = norm(getParam("cat") || "");
 
 // ---------- ESTADO ----------
@@ -52,51 +59,9 @@ let allProducts = [];
 let activeCategory = null; // clique no filtro lateral
 let activeMarca = null;
 
-// ---------- HOVER ZOOM (desktop) ----------
-function attachHoverZoom(imgEl){
-  const wrapper = imgEl && imgEl.closest(".km-zoom");
-  if (!wrapper || !imgEl) return;
-
-  // Desativa em telas pequenas
-  const isSmall = () => window.matchMedia("(max-width: 920px)").matches;
-
-  function enter(){
-    if (isSmall()) return;
-    imgEl.style.transform = "scale(1.6)";
-    imgEl.style.transformOrigin = "center center";
-  }
-  function move(e){
-    if (isSmall()) return;
-    const rect = wrapper.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const px = (x / rect.width) * 100;
-    const py = (y / rect.height) * 100;
-    imgEl.style.transformOrigin = `${px}% ${py}%`;
-  }
-  function leave(){
-    imgEl.style.transform = "scale(1)";
-    imgEl.style.transformOrigin = "center center";
-  }
-
-  // Garante estilos base
-  wrapper.style.overflow = "hidden";
-  wrapper.style.position = "relative";
-  imgEl.style.transition = "transform .2s ease";
-
-  wrapper.addEventListener("mouseenter", enter);
-  wrapper.addEventListener("mousemove", move);
-  wrapper.addEventListener("mouseleave", leave);
-}
-
-function wireAllHoverZoom(){
-  document.querySelectorAll(".km-zoom > img").forEach(attachHoverZoom);
-}
-
 // ---------- MODAL ----------
 function openModal(prod){
   if (!modalOverlay) return;
-
   if (modalTitle) modalTitle.textContent = prod.nome || "Produto KM";
   if (modalDesc)  modalDesc.textContent  = prod.descricaoDetalhada || prod.descricao || "Sem descrição disponível.";
   if (modalImg) {
@@ -151,17 +116,12 @@ function openModal(prod){
 
   modalOverlay.style.display = "block";
   document.body.style.overflow = "hidden";
-
-  // ativa zoom no modal
-  if (modalImg) attachHoverZoom(modalImg);
 }
-
 function closeModal(){
   if (!modalOverlay) return;
   modalOverlay.style.display = "none";
   document.body.style.overflow = "";
 }
-
 if (modalClose) modalClose.addEventListener("click", closeModal);
 if (modalOverlay) {
   modalOverlay.addEventListener("click", (e)=>{
@@ -184,7 +144,7 @@ function renderProducts(arr){
       const card = document.createElement("article");
       card.className = "km-prod-card";
       card.innerHTML = `
-        <div class="km-prod-card-img km-zoom">
+        <div class="km-prod-card-img">
           <img src="${p.imagemURL || 'assets/b1.svg'}" alt="${p.nome || ''}">
         </div>
         <h3>${p.nome || 'Sem nome'}</h3>
@@ -194,10 +154,6 @@ function renderProducts(arr){
       listEl.appendChild(card);
     });
 
-    // hover-zoom nos cards
-    wireAllHoverZoom();
-
-    // ligar botões de ver mais
     listEl.querySelectorAll(".km-prod-link").forEach(a=>{
       a.addEventListener("click", (ev)=>{
         ev.preventDefault();
@@ -259,16 +215,22 @@ function renderFiltersFromData(produtos){
   });
 }
 
+// helper: recente (30 dias)
+function isRecent(createdAt){
+  if (!createdAt || !createdAt.toMillis) return false;
+  const diff = Date.now() - createdAt.toMillis();
+  return diff < 30*24*60*60*1000;
+}
+
 // ---------- APLICAR FILTROS ----------
 function applyFilters(){
   let filtered = [...allProducts];
 
-  // 1) categoria vinda da URL (normalizada)
+  // 1) categoria da URL (normalizada)
   if (preCatKey){
     filtered = filtered.filter(p => norm(p.categoria) === preCatKey);
   }
-
-  // 2) cliques nos filtros laterais (valores exatos)
+  // 2) filtros laterais explícitos
   if (activeCategory){
     filtered = filtered.filter(p => p.categoria === activeCategory);
   }
@@ -276,45 +238,62 @@ function applyFilters(){
     filtered = filtered.filter(p => p.marca === activeMarca);
   }
 
-  // 3) checkboxes
+  // 3) SELECTS (prioridade) — com negativos
+  if (selEx && selEx.value){
+    if (selEx.value === "exclusivos"){
+      filtered = filtered.filter(p => p.exclusivo === true || p.tipo === "exclusivo");
+    } else if (selEx.value === "comum"){
+      filtered = filtered.filter(p => !(p.exclusivo === true || p.tipo === "exclusivo"));
+    }
+    // "todos" não restringe
+  }
+  if (selNv && selNv.value){
+    if (selNv.value === "novos"){
+      filtered = filtered.filter(p => p.novo === true || isRecent(p.createdAt));
+    } else if (selNv.value === "padrao"){
+      filtered = filtered.filter(p => !(p.novo === true || isRecent(p.createdAt)));
+    }
+    // "todos" não restringe
+  }
+
+  // 4) Fallback: se alguém marcar os checkboxes escondidos, ainda funciona
   if (chkExcl && chkExcl.checked){
-    filtered = filtered.filter(p => p.exclusivo === true);
+    filtered = filtered.filter(p => p.exclusivo === true || p.tipo === "exclusivo");
   }
   if (chkNovo && chkNovo.checked){
-    const now = Date.now();
-    filtered = filtered.filter(p => {
-      if (p.novo === true) return true;
-      if (p.createdAt && p.createdAt.toMillis){
-        const diff = now - p.createdAt.toMillis();
-        return diff < 30*24*60*60*1000;
-      }
-      return false;
-    });
+    filtered = filtered.filter(p => p.novo === true || isRecent(p.createdAt));
   }
 
   renderProducts(filtered);
 }
 
-// checkboxes
+// eventos para selects
+if (selEx) selEx.addEventListener("change", applyFilters);
+if (selNv) selNv.addEventListener("change", applyFilters);
+
+// checkboxes (fallback)
 if (chkExcl) chkExcl.addEventListener("change", applyFilters);
 if (chkNovo) chkNovo.addEventListener("change", applyFilters);
+
+// limpar filtros
 if (btnClear) btnClear.addEventListener("click", ()=>{
   activeCategory = null;
   activeMarca = null;
+
   if (chkExcl) chkExcl.checked = false;
   if (chkNovo) chkNovo.checked = false;
 
-  // limpa o ?cat= da URL e ignora filtro inicial
+  if (selEx) selEx.value = "todos";
+  if (selNv) selNv.value = "todos";
+
   preCatKey = "";
   removeQueryParam("cat");
 
-  // mostra tudo de novo
   renderProducts(allProducts);
 });
 
 // ---------- SNAPSHOT ----------
 db.collection("produtos")
-  // se o seu firestore tiver produto sem createdAt, remova o orderBy abaixo
   .orderBy("createdAt", "desc")
   .onSnapshot((snap)=>{
     allProducts = [];
@@ -324,21 +303,20 @@ db.collection("produtos")
       allProducts.push(p);
     });
 
-    // monta filtros
     renderFiltersFromData(allProducts);
 
-    // sempre aplica para considerar ?cat= ou filtros marcados
     const temFiltroLigado =
       preCatKey ||
       activeCategory ||
       activeMarca ||
+      (selEx && selEx.value !== "todos") ||
+      (selNv && selNv.value !== "todos") ||
       (chkExcl && chkExcl.checked) ||
       (chkNovo && chkNovo.checked);
 
     if (temFiltroLigado){
       applyFilters();
     } else {
-      // mostra TUDO
       renderProducts(allProducts);
     }
   });
